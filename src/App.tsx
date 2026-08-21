@@ -16,7 +16,7 @@ import { generateSlices, loadSource, planSlices, revokeSlices } from './lib/medi
 import type { SliceAsset, SliceOptions, SourceDocument } from './types';
 
 const DEFAULT_OPTIONS: SliceOptions = {
-  mode: 'mixed',
+  mode: 'portrait',
   background: '#F4F1EA',
   format: 'png',
   jpegQuality: 0.92,
