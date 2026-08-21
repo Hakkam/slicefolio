@@ -1,0 +1,16 @@
+/* Arabic-only motion correction for the scroll-driven Slicefolio story. */
+html[dir='rtl'] .demo-scroll-scene.is-active .demo-output-card-1 {
+  animation: demoSliceCardRtl .66s 1.5s cubic-bezier(.17, .84, .44, 1) forwards;
+}
+
+html[dir='rtl'] .demo-scroll-scene.is-active .demo-output-card-2 {
+  animation: demoSliceCardRtl .66s 1.88s cubic-bezier(.17, .84, .44, 1) forwards;
+}
+
+html[dir='rtl'] .demo-scroll-scene.is-active .demo-output-card-3 {
+  animation: demoSliceCardRtl .66s 2.26s cubic-bezier(.17, .84, .44, 1) forwards;
+}
+
+html[dir='rtl'] .demo-scroll-scene.is-active .demo-output-card-4 {
+  animation: demoSliceCardRtl .66s 2.64s cubic-bezier(.17, .84, .44, 1) forwards;
+}
