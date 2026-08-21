@@ -9,6 +9,7 @@ import './arabic-demo.css';
 import './components/LandingDemoScroll.css';
 import './components/LandingDemoScrollRtl.css';
 import './components/LandingDemoLoop.css';
+import './components/LandingDemoClarity.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
