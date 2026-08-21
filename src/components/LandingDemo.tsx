@@ -1,5 +1,18 @@
 import { useEffect, useRef, useState } from 'react';
-import { ArrowRight, Instagram, Layers3, RotateCcw, ScanLine } from 'lucide-react';
+import {
+  ArrowRight,
+  BatteryMedium,
+  Bookmark,
+  ChevronDown,
+  Heart,
+  Instagram,
+  Layers3,
+  MessageCircle,
+  RotateCcw,
+  ScanLine,
+  Send,
+  Wifi,
+} from 'lucide-react';
 import { pick, type Locale } from '../i18n';
 import './LandingDemo.css';
 import './LandingDemoPolish.css';
@@ -187,16 +200,28 @@ export function LandingDemo({ locale = 'en' }: { locale?: Locale }) {
           </header>
 
           <div className={`demo-instagram-card${isArabic ? ' demo-instagram-card-ar' : ''}`}>
+            <div className="demo-phone-status" aria-hidden="true">
+              <strong>9:41</strong>
+              <div>
+                <span className="demo-phone-signal">▮▮▮</span>
+                <Wifi size={11} strokeWidth={2.2} />
+                <BatteryMedium size={14} strokeWidth={2.1} />
+              </div>
+            </div>
+
             <div className="demo-instagram-appbar">
-              <Instagram size={13} strokeWidth={2} />
+              <Instagram size={14} strokeWidth={2} />
               <strong>Instagram</strong>
-              <span aria-hidden="true">⌄</span>
+              <ChevronDown size={12} strokeWidth={2} />
             </div>
 
             <div className="demo-instagram-header">
               <div className="demo-ig-avatar">SF</div>
-              <div><strong>yourstudio</strong><span>{pick(locale, 'Portfolio', 'معرض أعمال')}</span></div>
-              <b>•••</b>
+              <div>
+                <strong>yourstudio</strong>
+                <span>{pick(locale, 'Design portfolio', 'معرض تصميم')}</span>
+              </div>
+              <b aria-hidden="true">•••</b>
             </div>
 
             <div className="demo-instagram-media">
@@ -210,13 +235,36 @@ export function LandingDemo({ locale = 'en' }: { locale?: Locale }) {
                 ))}
               </div>
               <span className="demo-ig-counter">1/8</span>
-              <div className="demo-swipe-cue" aria-hidden="true"><span>{pick(locale, 'Swipe', 'اسحب')}</span><ArrowRight size={13} /></div>
+              <div className="demo-swipe-cue" aria-hidden="true">
+                <span>{pick(locale, 'Swipe', 'اسحب')}</span>
+                <ArrowRight size={13} />
+              </div>
             </div>
 
-            <div className="demo-instagram-actions">
-              <div><span>♡</span><span>○</span><span>⌁</span></div><span>▱</span>
+            <div className="demo-instagram-cta">
+              <span>{pick(locale, 'View project', 'عرض المشروع')}</span>
+              <ArrowRight size={12} />
             </div>
+
+            <div className="demo-instagram-actions" aria-hidden="true">
+              <div>
+                <Heart size={15} strokeWidth={1.9} />
+                <MessageCircle size={15} strokeWidth={1.9} />
+                <Send size={15} strokeWidth={1.9} />
+              </div>
+              <Bookmark size={15} strokeWidth={1.9} />
+            </div>
+
             <div className="demo-ig-dots" aria-hidden="true"><i /><i /><i /><i /></div>
+
+            <div className="demo-instagram-caption">
+              <strong>yourstudio</strong>
+              <span>{pick(
+                locale,
+                'Full website case study, sliced into a carousel with Slicefolio.',
+                'دراسة حالة كاملة للموقع، مقسّمة إلى كاروسيل باستخدام Slicefolio.',
+              )}</span>
+            </div>
           </div>
         </article>
       </div>
