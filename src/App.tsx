@@ -179,7 +179,7 @@ export default function App() {
       cancelled = true;
       window.clearTimeout(timer);
     };
-  }, [source, options, selectedPaddingKey, mediaModule, selectedSlideIndices]);
+  }, [source, options, selectedPaddingKey, mediaModule]);
 
   useEffect(() => {
     return () => {
