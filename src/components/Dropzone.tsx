@@ -61,6 +61,7 @@ export function Dropzone({ onFile, disabled = false }: DropzoneProps) {
         ref={inputRef}
         className="visually-hidden"
         type="file"
+        tabIndex={-1}
         accept="application/pdf,image/png,image/jpeg,image/webp,.pdf,.png,.jpg,.jpeg,.webp"
         onChange={(event) => {
           acceptFile(event.target.files?.[0]);
