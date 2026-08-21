@@ -172,24 +172,74 @@ export async function loadSource(
   return source;
 }
 
-function frameForSlide(mode: OutputMode, index: number) {
-  if (mode === 'mixed') {
-    return index === 0 ? FRAME_PRESETS.portrait : FRAME_PRESETS.landscape;
+function sourceCapacityForFrame(
+  source: SourceDocument,
+  frame: { width: number; height: number },
+  rotated: boolean,
+) {
+  if (rotated) {
+    const outputScale = frame.height / source.width;
+    return frame.width / outputScale;
   }
 
-  return FRAME_PRESETS[mode];
+  const outputScale = frame.width / source.width;
+  return frame.height / outputScale;
+}
+
+function planMixedSlices(source: SourceDocument): SlicePlan[] {
+  const plans: SlicePlan[] = [];
+  const coverFrame = FRAME_PRESETS.portrait;
+  const coverCapacity = sourceCapacityForFrame(source, coverFrame, false);
+
+  plans.push({
+    index: 0,
+    role: 'cover',
+    width: coverFrame.width,
+    height: coverFrame.height,
+    sourceStart: 0,
+    sourceEnd: Math.min(source.totalHeight, coverCapacity),
+    rotation: 0,
+  });
+
+  const bodyFrame = FRAME_PRESETS.landscape;
+  const bodyCapacity = sourceCapacityForFrame(source, bodyFrame, true);
+  const epsilon = 0.0001;
+  let cursor = 0;
+  let index = 1;
+
+  while (cursor < source.totalHeight - epsilon) {
+    const sourceEnd = Math.min(source.totalHeight, cursor + bodyCapacity);
+
+    plans.push({
+      index,
+      role: 'body',
+      width: bodyFrame.width,
+      height: bodyFrame.height,
+      sourceStart: cursor,
+      sourceEnd,
+      rotation: -90,
+    });
+
+    cursor = sourceEnd;
+    index += 1;
+  }
+
+  return plans;
 }
 
 export function planSlices(source: SourceDocument, mode: OutputMode): SlicePlan[] {
+  if (mode === 'mixed') {
+    return planMixedSlices(source);
+  }
+
+  const frame = FRAME_PRESETS[mode];
+  const sourceCapacity = sourceCapacityForFrame(source, frame, false);
   const plans: SlicePlan[] = [];
+  const epsilon = 0.0001;
   let cursor = 0;
   let index = 0;
-  const epsilon = 0.0001;
 
   while (cursor < source.totalHeight - epsilon) {
-    const frame = frameForSlide(mode, index);
-    const outputScale = frame.width / source.width;
-    const sourceCapacity = frame.height / outputScale;
     const sourceEnd = Math.min(source.totalHeight, cursor + sourceCapacity);
 
     plans.push({
@@ -199,6 +249,7 @@ export function planSlices(source: SourceDocument, mode: OutputMode): SlicePlan[
       height: frame.height,
       sourceStart: cursor,
       sourceEnd,
+      rotation: 0,
     });
 
     cursor = sourceEnd;
@@ -251,6 +302,35 @@ function drawSourceRange(
   }
 }
 
+function drawPlannedSlice(
+  context: CanvasRenderingContext2D,
+  source: SourceDocument,
+  plan: SlicePlan,
+) {
+  if (plan.rotation === -90) {
+    context.save();
+    context.translate(0, plan.height);
+    context.rotate(-Math.PI / 2);
+    drawSourceRange(
+      context,
+      source,
+      plan.sourceStart,
+      plan.sourceEnd,
+      plan.height,
+    );
+    context.restore();
+    return;
+  }
+
+  drawSourceRange(
+    context,
+    source,
+    plan.sourceStart,
+    plan.sourceEnd,
+    plan.width,
+  );
+}
+
 function canvasToBlob(
   canvas: HTMLCanvasElement,
   format: ExportFormat,
@@ -301,20 +381,14 @@ export async function generateSlices(
     context.fillStyle = options.background;
     context.fillRect(0, 0, canvas.width, canvas.height);
 
-    drawSourceRange(
-      context,
-      source,
-      plan.sourceStart,
-      plan.sourceEnd,
-      plan.width,
-    );
+    drawPlannedSlice(context, source, plan);
 
     const blob = await canvasToBlob(canvas, options.format, options.jpegQuality);
     if (shouldCancel?.()) break;
 
     assets.push({
       ...plan,
-      id: `${plan.index}-${plan.sourceStart.toFixed(3)}-${plan.sourceEnd.toFixed(3)}`,
+      id: `${plan.index}-${plan.sourceStart.toFixed(3)}-${plan.sourceEnd.toFixed(3)}-${plan.rotation}`,
       blob,
       url: URL.createObjectURL(blob),
       fileName: fileNameForSlice(plan.index, options.format),
