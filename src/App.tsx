@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { ControlsPanel } from './components/ControlsPanel';
 import { Dropzone } from './components/Dropzone';
+import { LandingDemo } from './components/LandingDemo';
 import { Preview } from './components/Preview';
 import { downloadAllSlices, downloadSlice } from './lib/export';
 import { generateSlices, loadSource, planSlices, revokeSlices } from './lib/media';
@@ -255,6 +256,8 @@ export default function App() {
               </button>
             </div>
           ) : null}
+
+          <LandingDemo />
 
           <section className="workflow-strip" aria-label="Slicefolio workflow">
             <div><span>01</span><strong>Upload</strong><p>PDF or long image</p></div>
