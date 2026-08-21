@@ -4,14 +4,182 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#f4f1ea" />
+    <meta name="color-scheme" content="light" />
+    <meta name="application-name" content="Slicefolio" />
+    <meta name="author" content="Hakkam" />
+    <meta
+      name="robots"
+      content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+    />
     <meta
       name="description"
-      content="Slicefolio turns full-page website designs into Instagram-ready carousel slices directly in your browser."
+      content="Slicefolio converts full-page website designs, PDFs, and long images into Instagram-ready carousel slides for designers. Files are processed locally in your browser."
     />
-    <title>Slicefolio — Full-page designs to Instagram slices</title>
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Slicefolio" />
+    <meta property="og:locale" content="en_US" />
+    <meta
+      property="og:title"
+      content="Slicefolio — Website & PDF to Instagram Carousel Tool"
+    />
+    <meta
+      property="og:description"
+      content="Turn full-page website designs, PDFs, and long images into Instagram-ready carousel slides. Your files stay in your browser."
+    />
+    <meta property="og:image" content="__SLICEFOLIO_OG_IMAGE__" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Slicefolio — website designs to Instagram carousel slides" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Slicefolio — Website & PDF to Instagram Carousel Tool"
+    />
+    <meta
+      name="twitter:description"
+      content="Turn full-page website designs, PDFs, and long images into Instagram-ready carousel slides. Your files stay in your browser."
+    />
+    <meta name="twitter:image" content="__SLICEFOLIO_OG_IMAGE__" />
+    <meta name="twitter:image:alt" content="Slicefolio — website designs to Instagram carousel slides" />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <!-- slicefolio:url-metadata -->
+    <!-- slicefolio:structured-data -->
+
+    <title>Slicefolio — Website & PDF to Instagram Carousel Tool</title>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div class="app-shell landing-shell">
+        <header class="topbar landing-topbar">
+          <a class="brand" href="/" aria-label="Slicefolio home">
+            <span class="brand-mark" aria-hidden="true">
+              <span></span>
+              <span></span>
+              <span></span>
+            </span>
+            <span>Slicefolio</span>
+          </a>
+          <div class="topbar-note">
+            <span aria-hidden="true" style="display:inline-block;width:15px;height:15px"></span>
+            Local browser processing
+          </div>
+        </header>
+
+        <main class="landing-main">
+          <section class="hero-copy" aria-labelledby="slicefolio-title">
+            <span class="product-kicker">
+              <span aria-hidden="true" style="display:inline-block;width:15px;height:15px"></span>
+              Built for UI/UX and web designers
+            </span>
+            <h1 id="slicefolio-title">Turn website designs and PDFs into Instagram carousel slides.</h1>
+            <p>
+              Slicefolio is a browser-based tool for UI/UX and web designers that converts full-page website designs, PDFs, and long images into Instagram-ready carousel slides. Your files stay in your browser and are never uploaded to Slicefolio.
+            </p>
+          </section>
+
+          <div class="upload-shell">
+            <button type="button" class="dropzone">
+              <span class="dropzone-icon" aria-hidden="true"></span>
+              <span class="dropzone-copy">
+                <strong>Drop your full-page design here</strong>
+                <span>or click to choose a file</span>
+              </span>
+              <span class="dropzone-formats">
+                <span><i aria-hidden="true" style="display:inline-block;width:15px;height:15px"></i> PDF</span>
+                <span><i aria-hidden="true" style="display:inline-block;width:15px;height:15px"></i> PNG, JPG, WebP</span>
+                <span>Up to 250 MB</span>
+              </span>
+            </button>
+            <div class="privacy-note">
+              <span aria-hidden="true" style="display:inline-block;width:15px;height:15px"></span>
+              <span>Your files stay in your browser. Nothing is uploaded.</span>
+            </div>
+          </div>
+
+          <section class="workflow-strip" aria-labelledby="workflow-title">
+            <h2 id="workflow-title" class="visually-hidden">How Slicefolio works</h2>
+            <div><span>01</span><strong>Upload</strong><p>PDF, PNG, JPG, or WebP</p></div>
+            <div><span>02</span><strong>Slice</strong><p>Complete, sequential body</p></div>
+            <div><span>03</span><strong>Preview</strong><p>Review the full sequence</p></div>
+            <div><span>04</span><strong>Export</strong><p>PNG, JPEG, or ZIP</p></div>
+          </section>
+
+          <section class="product-facts" aria-labelledby="product-facts-title">
+            <div class="landing-section-intro">
+              <span class="section-eyebrow">Product facts</span>
+              <h2 id="product-facts-title">Present web design on Instagram without rebuilding it.</h2>
+              <p>
+                Slicefolio keeps the workflow focused: upload a complete design, create a sequential carousel, review the slides, and export the result.
+              </p>
+            </div>
+            <div class="fact-grid">
+              <article class="fact-item">
+                <h3>Made for design presentations</h3>
+                <p>Use full-page website designs, long website screenshots, portfolio presentations, or webpage exports from UI/UX and web design work.</p>
+              </article>
+              <article class="fact-item">
+                <h3>Instagram-ready output sizes</h3>
+                <p>Export Portrait 4:5 at 1080 × 1350, Tall 3:4 at 1080 × 1440, or Square 1:1 at 1080 × 1080.</p>
+              </article>
+              <article class="fact-item">
+                <h3>Local browser processing</h3>
+                <p>PDF rendering, image decoding, slicing, previews, image encoding, and ZIP packaging happen in your browser. Nothing is uploaded to Slicefolio.</p>
+              </article>
+            </div>
+          </section>
+
+          <section class="faq-section" aria-labelledby="faq-title">
+            <div class="landing-section-intro">
+              <span class="section-eyebrow">Common questions</span>
+              <h2 id="faq-title">Slicefolio questions, answered directly.</h2>
+            </div>
+            <div class="faq-list">
+              <details>
+                <summary>What is Slicefolio?</summary>
+                <p>Slicefolio is a browser-based tool that converts full-page website designs, PDFs, and long images into Instagram-ready carousel slides for UI/UX designers, web designers, agencies, and creative professionals.</p>
+              </details>
+              <details>
+                <summary>Can I convert a PDF into Instagram carousel slides?</summary>
+                <p>Yes. Slicefolio accepts PDF files as well as PNG, JPG, and WebP images. The current file-size limit is 250 MB.</p>
+              </details>
+              <details>
+                <summary>What Instagram carousel sizes does Slicefolio support?</summary>
+                <p>Slicefolio supports Portrait 4:5 at 1080 × 1350, Tall 3:4 at 1080 × 1440, and Square 1:1 at 1080 × 1080.</p>
+              </details>
+              <details>
+                <summary>Does Slicefolio upload my design files?</summary>
+                <p>No. Your selected files stay in your browser. Slicefolio processes the source locally instead of uploading it to a Slicefolio server.</p>
+              </details>
+              <details>
+                <summary>Can I add padding to generated slides?</summary>
+                <p>Yes. Padding can apply to every slide or only selected slides, with independent controls for the top, right, bottom, and left sides.</p>
+              </details>
+              <details>
+                <summary>Can I export all slides at once?</summary>
+                <p>Yes. You can download slides individually as PNG or JPEG files, or package the complete ordered sequence into a ZIP.</p>
+              </details>
+              <details>
+                <summary>Does Slicefolio use AI to detect sections?</summary>
+                <p>No. The current slicing model is sequential and deterministic. Slicefolio does not currently use semantic or AI section detection to choose cut points.</p>
+              </details>
+            </div>
+          </section>
+        </main>
+
+        <footer class="landing-footer">
+          <div class="footer-brand-credit">
+            <span>Slicefolio</span>
+            <a href="https://hakkam.com" target="_blank" rel="noopener noreferrer">Developed by Hakkam ↗</a>
+          </div>
+          <span>No account required. Files stay in your browser.</span>
+        </footer>
+      </div>
+    </div>
+    <noscript>Slicefolio requires JavaScript to process files locally in your browser.</noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
