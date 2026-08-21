@@ -128,7 +128,12 @@ export function ControlsPanel({
               aria-label="Background color"
               onChange={(event) => update('background', event.target.value)}
             />
-            <span className="color-value">{options.background.toUpperCase()}</span>
+            <input
+              type="text"
+              value={options.background.toUpperCase()}
+              aria-label="Background color hex value"
+              readOnly
+            />
           </div>
         </div>
         <p className="control-help">Unused space on the final slide is filled with this color. Source content is never cropped.</p>
