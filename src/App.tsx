@@ -222,33 +222,16 @@ export default function App() {
         </header>
 
         <main className="landing-main">
-          <section className="hero-copy landing-animated-hero">
-            <div className="hero-motion-field" aria-hidden="true">
-              <span className="motion-tile motion-tile-a">4:5</span>
-              <span className="motion-tile motion-tile-b">90°</span>
-              <span className="motion-tile motion-tile-c">1:1</span>
-              <span className="motion-cross motion-cross-a">+</span>
-              <span className="motion-cross motion-cross-b">+</span>
-            </div>
+          <section className="hero-copy">
             <span className="product-kicker">
               <Sparkles size={15} />
               Built for full-page design exports
             </span>
-            <h1>
-              <span className="hero-line">Turn full-page designs</span>
-              <span className="hero-line hero-line-accent">into Instagram-ready slices.</span>
-            </h1>
+            <h1>Turn full-page designs into Instagram-ready slices.</h1>
             <p>
               Upload a website PDF or long image. Slicefolio divides it into a clean carousel sequence without cropping, skipping, or uploading your work.
             </p>
           </section>
-
-          <div className="motion-marquee" aria-hidden="true">
-            <div>
-              <span>SLICE</span><i>•</i><span>ROTATE</span><i>•</i><span>FRAME</span><i>•</i><span>EXPORT</span><i>•</i>
-              <span>SLICE</span><i>•</i><span>ROTATE</span><i>•</i><span>FRAME</span><i>•</i><span>EXPORT</span><i>•</i>
-            </div>
-          </div>
 
           <Dropzone onFile={handleFile} disabled={processingSource} />
 
@@ -273,7 +256,7 @@ export default function App() {
             </div>
           ) : null}
 
-          <section className="workflow-strip animated-workflow" aria-label="Slicefolio workflow">
+          <section className="workflow-strip" aria-label="Slicefolio workflow">
             <div><span>01</span><strong>Upload</strong><p>PDF or long image</p></div>
             <div><span>02</span><strong>Slice</strong><p>Blind, sequential, lossless</p></div>
             <div><span>03</span><strong>Preview</strong><p>Review the full sequence</p></div>
