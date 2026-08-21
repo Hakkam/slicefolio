@@ -1,18 +1,24 @@
 /* Shared visual balance for the three product-journey cards. */
 
 .demo-stage {
-  --demo-card-height: 430px;
-  --demo-instagram-width: 262px;
+  --demo-card-width: 292px;
+  --demo-card-height: 448px;
+  grid-template-columns: minmax(0, 1fr) 42px minmax(0, 1fr) 42px minmax(0, 1fr);
+  min-height: 558px;
 }
 
 .demo-step {
-  display: flex;
+  width: 100%;
   min-width: 0;
+  display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 .demo-step-label {
+  width: min(var(--demo-card-width), 100%);
   min-height: 28px;
+  height: 28px;
   align-items: center;
   margin-bottom: 10px;
 }
@@ -29,8 +35,11 @@
 .demo-browser,
 .demo-processor,
 .demo-instagram-card {
+  width: min(var(--demo-card-width), 100%);
+  max-width: var(--demo-card-width);
   height: var(--demo-card-height);
   min-height: var(--demo-card-height);
+  margin-inline: auto;
   box-sizing: border-box;
 }
 
@@ -51,43 +60,33 @@
   flex: 1 1 auto;
 }
 
-/* Make the final stage read immediately as an Instagram post rather than
-   as a generic social card. */
+/* Instagram post --------------------------------------------------------- */
+
 .demo-instagram-card {
   position: relative;
-  width: min(var(--demo-instagram-width), 100%);
-  max-width: var(--demo-instagram-width);
   display: flex;
   flex-direction: column;
-  margin-inline: auto;
   overflow: hidden;
-  border-color: rgba(24, 24, 21, 0.2);
-  border-radius: 15px;
+  border: 1px solid rgba(24, 24, 21, 0.22);
+  border-radius: 18px;
   background: #fff;
-  box-shadow: 0 18px 42px rgba(24, 24, 21, 0.13), 0 2px 6px rgba(24, 24, 21, 0.07);
+  color: #151515;
+  box-shadow: 0 20px 46px rgba(24, 24, 21, 0.14), 0 2px 7px rgba(24, 24, 21, 0.08);
 }
 
-.demo-instagram-appbar {
-  flex: 0 0 28px;
-  min-height: 28px;
-  display: grid;
-  grid-template-columns: 18px 1fr 18px;
+.demo-phone-status {
+  flex: 0 0 21px;
+  min-height: 21px;
+  display: flex;
   align-items: center;
-  gap: 5px;
-  padding: 0 9px;
-  border-bottom: 1px solid rgba(24, 24, 21, 0.1);
+  justify-content: space-between;
+  padding: 0 10px 0 11px;
   background: #fff;
-  color: #171714;
+  color: #111;
   direction: ltr;
 }
 
-.demo-instagram-appbar svg {
-  width: 13px;
-  height: 13px;
-}
-
-.demo-instagram-appbar strong {
-  justify-self: start;
+.demo-phone-status > strong {
   font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-size: 7px;
   line-height: 1;
@@ -95,44 +94,196 @@
   letter-spacing: -0.02em;
 }
 
-.demo-instagram-appbar > span {
-  justify-self: end;
-  color: var(--muted);
-  font-size: 9px;
+.demo-phone-status > div {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.demo-phone-signal {
+  display: inline-block;
+  font-size: 5px;
   line-height: 1;
+  letter-spacing: -1px;
+  transform: scaleY(.72);
+  transform-origin: center;
+}
+
+.demo-instagram-appbar {
+  flex: 0 0 27px;
+  min-height: 27px;
+  display: grid;
+  grid-template-columns: 18px 1fr 18px;
+  align-items: center;
+  gap: 5px;
+  padding: 0 10px;
+  border-top: 1px solid rgba(24, 24, 21, 0.04);
+  border-bottom: 1px solid rgba(24, 24, 21, 0.09);
+  background: #fff;
+  direction: ltr;
+}
+
+.demo-instagram-appbar svg:first-child {
+  width: 14px;
+  height: 14px;
+}
+
+.demo-instagram-appbar strong {
+  justify-self: start;
+  font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 8px;
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.demo-instagram-appbar svg:last-child {
+  justify-self: end;
+  color: #777;
 }
 
 .demo-instagram-header {
-  flex: 0 0 40px;
-  min-height: 40px;
-  padding-inline: 9px;
-  border-bottom: 1px solid rgba(24, 24, 21, 0.07);
+  flex: 0 0 42px;
+  min-height: 42px;
+  display: grid;
+  grid-template-columns: 31px minmax(0, 1fr) 26px;
+  align-items: center;
+  gap: 7px;
+  padding: 0 9px;
+  border-bottom: 1px solid rgba(24, 24, 21, 0.08);
+  background: #fff;
+}
+
+.demo-ig-avatar {
+  width: 28px;
+  height: 28px;
+  border: 2px solid #fff;
+  outline: 1.5px solid #f4518a;
+  background: linear-gradient(145deg, #ff8a35, #f44b83 48%, #7a55e7);
+  color: #fff;
+  box-shadow: inset 0 0 0 7px #171714;
+}
+
+.demo-instagram-header > div:nth-child(2) {
+  min-width: 0;
+  gap: 2px;
+}
+
+.demo-instagram-header strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #151515;
+  font-size: 7.5px;
+  font-weight: 800;
+}
+
+.demo-instagram-header span {
+  color: #737373;
+  font-size: 5.5px;
+  line-height: 1.2;
+}
+
+.demo-instagram-header b {
+  justify-self: end;
+  color: #222;
+  font-size: 8px;
+  letter-spacing: .08em;
 }
 
 .demo-instagram-media {
+  position: relative;
   min-height: 0;
   flex: 1 1 auto;
   aspect-ratio: auto;
+  overflow: hidden;
   border-bottom: 1px solid rgba(24, 24, 21, 0.08);
+  background: #ddd9d0;
+}
+
+.demo-instagram-cta {
+  flex: 0 0 24px;
+  min-height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 10px;
+  border-bottom: 1px solid rgba(24, 24, 21, 0.08);
+  background: #ebe8e1;
+  color: #34322d;
+  font-size: 6px;
+  line-height: 1;
+  font-weight: 750;
+}
+
+.demo-instagram-cta svg {
+  flex: 0 0 auto;
 }
 
 .demo-instagram-actions {
-  flex: 0 0 27px;
-  min-height: 27px;
-  padding-inline: 9px;
+  flex: 0 0 29px;
+  min-height: 29px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 9px;
+  color: #111;
+}
+
+.demo-instagram-actions > div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.demo-instagram-actions svg {
+  display: block;
 }
 
 .demo-ig-dots {
-  flex: 0 0 5px;
-  height: 5px;
-  min-height: 5px;
+  flex: 0 0 7px;
+  height: 7px;
+  min-height: 7px;
+  display: flex;
   align-items: flex-start;
+  justify-content: center;
+  gap: 3px;
   margin: 0;
   padding-top: 1px;
 }
 
-/* Keep the three visual cards aligned even when translated labels have
-   different natural line heights. */
+.demo-ig-dots i {
+  width: 3px;
+  height: 3px;
+}
+
+.demo-instagram-caption {
+  flex: 0 0 43px;
+  min-height: 43px;
+  display: block;
+  overflow: hidden;
+  padding: 5px 9px 7px;
+  background: #fff;
+  color: #333;
+  font-size: 6px;
+  line-height: 1.45;
+  text-align: left;
+}
+
+.demo-instagram-caption strong {
+  display: inline;
+  margin-right: 4px;
+  color: #151515;
+  font-size: inherit;
+  font-weight: 800;
+}
+
+.demo-instagram-caption span {
+  color: #3c3c3c;
+}
+
+/* Keep the translated stage headings aligned in both languages. */
 html[lang='ar'] .demo-step-label,
 html[lang='en'] .demo-step-label {
   height: 28px;
@@ -144,15 +295,24 @@ html[lang='ar'] .demo-step-label strong {
 
 @media (max-width: 1040px) {
   .demo-stage {
-    --demo-card-height: 410px;
-    --demo-instagram-width: 246px;
+    --demo-card-width: 268px;
+    --demo-card-height: 424px;
+    grid-template-columns: minmax(0, 1fr) 30px minmax(0, 1fr) 30px minmax(0, 1fr);
+    min-height: 530px;
+  }
+
+  .demo-instagram-caption {
+    flex-basis: 39px;
+    min-height: 39px;
   }
 }
 
 @media (max-width: 860px) {
   .demo-stage {
-    --demo-card-height: 420px;
-    --demo-instagram-width: 254px;
+    --demo-card-width: 430px;
+    --demo-card-height: 430px;
+    grid-template-columns: 1fr;
+    min-height: initial;
   }
 
   .demo-step {
@@ -162,8 +322,8 @@ html[lang='ar'] .demo-step-label strong {
 
 @media (max-width: 680px) {
   .demo-stage {
-    --demo-card-height: 390px;
-    --demo-instagram-width: 230px;
+    --demo-card-width: 100%;
+    --demo-card-height: 398px;
   }
 
   .demo-step-label {
@@ -176,27 +336,48 @@ html[lang='ar'] .demo-step-label strong {
   html[lang='en'] .demo-step-label {
     height: 27px;
   }
+
+  .demo-instagram-caption {
+    flex-basis: 37px;
+    min-height: 37px;
+  }
 }
 
 @media (max-width: 430px) {
   .demo-stage {
-    --demo-card-height: 370px;
-    --demo-instagram-width: 214px;
+    --demo-card-height: 378px;
+  }
+
+  .demo-phone-status {
+    flex-basis: 19px;
+    min-height: 19px;
   }
 
   .demo-instagram-appbar {
-    flex-basis: 26px;
-    min-height: 26px;
+    flex-basis: 25px;
+    min-height: 25px;
     padding-inline: 8px;
   }
 
   .demo-instagram-header {
-    flex-basis: 37px;
-    min-height: 37px;
+    flex-basis: 38px;
+    min-height: 38px;
+  }
+
+  .demo-instagram-cta {
+    flex-basis: 22px;
+    min-height: 22px;
   }
 
   .demo-instagram-actions {
-    flex-basis: 25px;
-    min-height: 25px;
+    flex-basis: 26px;
+    min-height: 26px;
+  }
+
+  .demo-instagram-caption {
+    flex-basis: 34px;
+    min-height: 34px;
+    padding-top: 4px;
+    font-size: 5.5px;
   }
 }
