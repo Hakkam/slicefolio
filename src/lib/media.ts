@@ -3,6 +3,7 @@ import pdfWorker from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 import type {
   ExportFormat,
   OutputMode,
+  PaddingSettings,
   ProgressCallback,
   SliceAsset,
   SliceOptions,
@@ -17,6 +18,7 @@ const PDF_RENDER_WIDTH = 2200;
 const PDF_MIN_RENDER_WIDTH = 1600;
 const PDF_TILE_HEIGHT = 6000;
 const MAX_FILE_SIZE = 250 * 1024 * 1024;
+const MAX_PADDING = 420;
 
 const FRAME_PRESETS = {
   portrait: { width: 1080, height: 1350 },
@@ -190,8 +192,6 @@ export function planSlices(source: SourceDocument, mode: OutputMode): SlicePlan[
   const frame = FRAME_PRESETS[mode];
   const plans: SlicePlan[] = [];
 
-  // Slide 01 is a standalone hero cover. It intentionally duplicates the top
-  // of the source and does not consume any of the body sequence.
   const coverCapacity = sourceCapacityForFrame(source, frame, false);
   plans.push({
     index: 0,
@@ -203,8 +203,6 @@ export function planSlices(source: SourceDocument, mode: OutputMode): SlicePlan[
     rotation: 0,
   });
 
-  // Slide 02 restarts at source position 0. The entire body then advances
-  // sequentially from top to bottom while each slice is rotated 90°.
   const bodyCapacity = sourceCapacityForFrame(source, frame, true);
   const epsilon = 0.0001;
   let cursor = 0;
@@ -302,6 +300,84 @@ function drawPlannedSlice(
   );
 }
 
+function clampPadding(value: number) {
+  if (!Number.isFinite(value)) return 0;
+  return Math.max(0, Math.min(MAX_PADDING, Math.round(value)));
+}
+
+function shouldApplyPadding(
+  padding: PaddingSettings,
+  slideIndex: number,
+  selectedSlideIndices: number[],
+) {
+  if (!padding.enabled) return false;
+  if (padding.scope === 'all') return true;
+  return selectedSlideIndices.includes(slideIndex);
+}
+
+function drawWithPadding(
+  context: CanvasRenderingContext2D,
+  source: SourceDocument,
+  plan: SlicePlan,
+  padding: PaddingSettings,
+  selectedSlideIndices: number[],
+  background: string,
+) {
+  if (!shouldApplyPadding(padding, plan.index, selectedSlideIndices)) {
+    drawPlannedSlice(context, source, plan);
+    return;
+  }
+
+  const top = clampPadding(padding.top);
+  const right = clampPadding(padding.right);
+  const bottom = clampPadding(padding.bottom);
+  const left = clampPadding(padding.left);
+
+  if (top === 0 && right === 0 && bottom === 0 && left === 0) {
+    drawPlannedSlice(context, source, plan);
+    return;
+  }
+
+  const contentCanvas = document.createElement('canvas');
+  contentCanvas.width = plan.width;
+  contentCanvas.height = plan.height;
+
+  const contentContext = contentCanvas.getContext('2d', { alpha: false });
+  if (!contentContext) {
+    throw new Error('Your browser could not create a padding canvas.');
+  }
+
+  contentContext.fillStyle = background;
+  contentContext.fillRect(0, 0, contentCanvas.width, contentCanvas.height);
+  drawPlannedSlice(contentContext, source, plan);
+
+  const availableWidth = Math.max(1, plan.width - left - right);
+  const availableHeight = Math.max(1, plan.height - top - bottom);
+  const containScale = Math.min(
+    availableWidth / plan.width,
+    availableHeight / plan.height,
+  );
+  const destinationWidth = Math.max(1, plan.width * containScale);
+  const destinationHeight = Math.max(1, plan.height * containScale);
+  const destinationX = left + (availableWidth - destinationWidth) / 2;
+  const destinationY = top + (availableHeight - destinationHeight) / 2;
+
+  context.drawImage(
+    contentCanvas,
+    0,
+    0,
+    plan.width,
+    plan.height,
+    destinationX,
+    destinationY,
+    destinationWidth,
+    destinationHeight,
+  );
+
+  contentCanvas.width = 1;
+  contentCanvas.height = 1;
+}
+
 function canvasToBlob(
   canvas: HTMLCanvasElement,
   format: ExportFormat,
@@ -330,6 +406,7 @@ function fileNameForSlice(index: number, format: ExportFormat) {
 export async function generateSlices(
   source: SourceDocument,
   options: SliceOptions,
+  selectedSlideIndices: number[] = [],
   onProgress?: ProgressCallback,
   shouldCancel?: () => boolean,
 ): Promise<SliceAsset[]> {
@@ -352,7 +429,14 @@ export async function generateSlices(
     context.fillStyle = options.background;
     context.fillRect(0, 0, canvas.width, canvas.height);
 
-    drawPlannedSlice(context, source, plan);
+    drawWithPadding(
+      context,
+      source,
+      plan,
+      options.padding,
+      selectedSlideIndices,
+      options.background,
+    );
 
     const blob = await canvasToBlob(canvas, options.format, options.jpegQuality);
     if (shouldCancel?.()) break;
