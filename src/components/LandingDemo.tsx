@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-import { ArrowRight, Check, Instagram, Layers3, RotateCcw, ScanLine } from 'lucide-react';
+import { ArrowRight, Instagram, Layers3, RotateCcw, ScanLine } from 'lucide-react';
 import './LandingDemo.css';
+import './LandingDemoPolish.css';
 
 function SampleWebsite() {
   return (
@@ -95,15 +96,13 @@ export function LandingDemo() {
     <section className="landing-demo" ref={rootRef} aria-labelledby="landing-demo-title">
       <div className="landing-demo-heading">
         <div>
-          <span className="section-eyebrow">See the workflow</span>
-          <h2 id="landing-demo-title">From one long website to a ready-to-post carousel.</h2>
-          <p>
-            Capture the full page once. Slicefolio turns the continuous design into ordered, Instagram-ready frames while keeping the visual story intact.
-          </p>
+          <span className="section-eyebrow">See it in action</span>
+          <h2 id="landing-demo-title">From one long website to an Instagram carousel.</h2>
+          <p>Capture once. Slicefolio turns the full design into an ordered, ready-to-post sequence.</p>
         </div>
         <button type="button" className="demo-replay" onClick={replay}>
           <RotateCcw size={15} />
-          Replay demo
+          Replay
         </button>
       </div>
 
@@ -118,7 +117,7 @@ export function LandingDemo() {
         <article className="demo-step demo-capture-step">
           <header className="demo-step-label">
             <span>01</span>
-            <div><strong>Capture</strong><small>One full-page design</small></div>
+            <div><strong>Capture</strong></div>
           </header>
 
           <div className="demo-browser">
@@ -129,12 +128,10 @@ export function LandingDemo() {
             </div>
             <div className="demo-browser-viewport">
               <div className="demo-site-track"><SampleWebsite /></div>
-              <div className="demo-capture-scan"><span>CAPTURING FULL PAGE</span></div>
+              <div className="demo-capture-scan"><span>FULL PAGE</span></div>
               <div className="demo-capture-ruler" aria-hidden="true"><i /><i /><i /><i /><i /></div>
             </div>
           </div>
-
-          <div className="demo-source-badge"><Check size={13} />Full page · 1440 × 8240 px</div>
         </article>
 
         <div className="demo-flow-arrow demo-flow-arrow-a" aria-hidden="true"><span /><ArrowRight size={18} /></div>
@@ -142,7 +139,7 @@ export function LandingDemo() {
         <article className="demo-step demo-slice-step">
           <header className="demo-step-label">
             <span>02</span>
-            <div><strong>Slice with Slicefolio</strong><small>Frame · rotate · preserve order</small></div>
+            <div><strong>Slice</strong></div>
           </header>
 
           <div className="demo-processor">
@@ -181,7 +178,7 @@ export function LandingDemo() {
         <article className="demo-step demo-publish-step">
           <header className="demo-step-label">
             <span>03</span>
-            <div><strong>Publish</strong><small>A coherent Instagram carousel</small></div>
+            <div><strong>Publish</strong></div>
           </header>
 
           <div className="demo-instagram-card">
@@ -206,15 +203,10 @@ export function LandingDemo() {
               <div><span>♡</span><span>○</span><span>⌁</span></div><span>▱</span>
             </div>
             <div className="demo-ig-dots" aria-hidden="true"><i /><i /><i /><i /></div>
-            <p><strong>yourstudio</strong> Full website case study, sliced with Slicefolio.</p>
           </div>
 
-          <div className="demo-published-badge"><Instagram size={14} />Ready for Instagram</div>
+          <div className="demo-published-badge"><Instagram size={14} />Ready to post</div>
         </article>
-      </div>
-
-      <div className="demo-summary" aria-label="Slicefolio workflow summary">
-        <span><b>01</b> Capture once</span><i /><span><b>02</b> Slice automatically</span><i /><span><b>03</b> Publish as a sequence</span>
       </div>
     </section>
   );
