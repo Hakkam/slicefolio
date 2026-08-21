@@ -35,7 +35,8 @@ export function Preview({
           <div className="active-meta">
             <span>Slide {activeIndex + 1} of {slices.length}</span>
             <span>{activeSlice.width} × {activeSlice.height}</span>
-            <span>{activeSlice.role === 'cover' ? 'Cover' : 'Body'}</span>
+            <span>{activeSlice.role === 'cover' ? 'Hero cover' : 'Body'}</span>
+            {activeSlice.rotation !== 0 ? <span>Rotated 90°</span> : null}
           </div>
         ) : null}
       </div>
@@ -128,7 +129,11 @@ export function Preview({
               </span>
               <span className="thumbnail-meta">
                 <strong>{String(index + 1).padStart(2, '0')}</strong>
-                <span>{slice.role === 'cover' ? 'Cover' : `${slice.width} × ${slice.height}`}</span>
+                <span>
+                  {slice.role === 'cover'
+                    ? 'Hero cover'
+                    : `${slice.rotation !== 0 ? '90° · ' : ''}${slice.width} × ${slice.height}`}
+                </span>
               </span>
             </button>
           ))}
