@@ -5,6 +5,7 @@ import './styles.css';
 import './enhancements.css';
 import './brand.css';
 import './arabic.css';
+import './arabic-demo.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
