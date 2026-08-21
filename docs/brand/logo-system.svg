@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 820" role="img" aria-labelledby="title desc">
+  <title id="title">Slicefolio final logo system</title>
+  <desc id="desc">Primary, standalone, wordmark, small-size, monochrome and accent versions on neutral backgrounds.</desc>
+  <rect width="1200" height="820" fill="#F4F1EA"/>
+  <text x="64" y="66" fill="#181815" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="650" letter-spacing="-0.8">Slicefolio — logo system</text>
+  <text x="64" y="94" fill="#74726B" font-family="Inter, Arial, sans-serif" font-size="14">Continuum Slice · flat vector master</text>
+
+  <g transform="translate(64 132)">
+    <rect width="1072" height="190" rx="24" fill="#FBFAF7" stroke="#DEDBD3"/>
+    <text x="28" y="36" fill="#74726B" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" letter-spacing="0.8">PRIMARY HORIZONTAL</text>
+    <g transform="translate(302 63)">
+      <path fill="#181815" fill-rule="evenodd" clip-rule="evenodd" d="M14 6h36a6 6 0 0 1 6 6v40a6 6 0 0 1-6 6H14a6 6 0 0 1-6-6V12a6 6 0 0 1 6-6Zm-6 17h38v6H8v-6Zm10 18h38v6H18v-6Z"/>
+      <text x="78" y="43" fill="#181815" font-family="Inter Display, Inter, Arial, sans-serif" font-size="38" font-weight="650" letter-spacing="-1.6">Slicefolio</text>
+    </g>
+  </g>
+
+  <g transform="translate(64 348)">
+    <rect width="332" height="206" rx="24" fill="#FBFAF7" stroke="#DEDBD3"/>
+    <text x="24" y="34" fill="#74726B" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" letter-spacing="0.8">STANDALONE SYMBOL</text>
+    <g transform="translate(126 65) scale(1.3)">
+      <path fill="#181815" fill-rule="evenodd" clip-rule="evenodd" d="M14 6h36a6 6 0 0 1 6 6v40a6 6 0 0 1-6 6H14a6 6 0 0 1-6-6V12a6 6 0 0 1 6-6Zm-6 17h38v6H8v-6Zm10 18h38v6H18v-6Z"/>
+    </g>
+  </g>
+
+  <g transform="translate(420 348)">
+    <rect width="332" height="206" rx="24" fill="#FBFAF7" stroke="#DEDBD3"/>
+    <text x="24" y="34" fill="#74726B" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" letter-spacing="0.8">WORDMARK ONLY</text>
+    <text x="54" y="126" fill="#181815" font-family="Inter Display, Inter, Arial, sans-serif" font-size="42" font-weight="650" letter-spacing="-1.8">Slicefolio</text>
+  </g>
+
+  <g transform="translate(776 348)">
+    <rect width="360" height="206" rx="24" fill="#181815"/>
+    <text x="24" y="34" fill="#A8A7A1" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" letter-spacing="0.8">REVERSED / DARK</text>
+    <g transform="translate(48 75)">
+      <path fill="#FFFFFF" fill-rule="evenodd" clip-rule="evenodd" d="M14 6h36a6 6 0 0 1 6 6v40a6 6 0 0 1-6 6H14a6 6 0 0 1-6-6V12a6 6 0 0 1 6-6Zm-6 17h38v6H8v-6Zm10 18h38v6H18v-6Z"/>
+      <text x="78" y="43" fill="#FFFFFF" font-family="Inter Display, Inter, Arial, sans-serif" font-size="34" font-weight="650" letter-spacing="-1.4">Slicefolio</text>
+    </g>
+  </g>
+
+  <g transform="translate(64 580)">
+    <rect width="516" height="176" rx="24" fill="#FBFAF7" stroke="#DEDBD3"/>
+    <text x="24" y="34" fill="#74726B" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" letter-spacing="0.8">SMALL SIZE</text>
+    <g transform="translate(74 70)">
+      <path transform="scale(.75)" fill="#181815" fill-rule="evenodd" clip-rule="evenodd" d="M7.5 3h17A4.5 4.5 0 0 1 29 7.5v17a4.5 4.5 0 0 1-4.5 4.5h-17A4.5 4.5 0 0 1 3 24.5v-17A4.5 4.5 0 0 1 7.5 3ZM3 11h20v4H3v-4Zm7 7h19v4H10v-4Z"/>
+      <text x="-4" y="54" fill="#74726B" font-family="Inter, Arial, sans-serif" font-size="11">16 px</text>
+    </g>
+    <g transform="translate(190 64)">
+      <path fill="#181815" fill-rule="evenodd" clip-rule="evenodd" d="M7.5 3h17A4.5 4.5 0 0 1 29 7.5v17a4.5 4.5 0 0 1-4.5 4.5h-17A4.5 4.5 0 0 1 3 24.5v-17A4.5 4.5 0 0 1 7.5 3ZM3 11h20v4H3v-4Zm7 7h19v4H10v-4Z"/>
+      <text x="-1" y="60" fill="#74726B" font-family="Inter, Arial, sans-serif" font-size="11">24 px</text>
+    </g>
+    <g transform="translate(342 57) scale(.95)">
+      <path fill="#FF5A36" fill-rule="evenodd" clip-rule="evenodd" d="M14 6h36a6 6 0 0 1 6 6v40a6 6 0 0 1-6 6H14a6 6 0 0 1-6-6V12a6 6 0 0 1 6-6Zm-6 17h38v6H8v-6Zm10 18h38v6H18v-6Z"/>
+    </g>
+  </g>
+
+  <g transform="translate(604 580)">
+    <rect width="532" height="176" rx="24" fill="#FBFAF7" stroke="#DEDBD3"/>
+    <text x="24" y="34" fill="#74726B" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" letter-spacing="0.8">ACCENT VERSION · #FF5A36</text>
+    <g transform="translate(134 65)">
+      <path fill="#FF5A36" fill-rule="evenodd" clip-rule="evenodd" d="M14 6h36a6 6 0 0 1 6 6v40a6 6 0 0 1-6 6H14a6 6 0 0 1-6-6V12a6 6 0 0 1 6-6Zm-6 17h38v6H8v-6Zm10 18h38v6H18v-6Z"/>
+      <text x="78" y="43" fill="#181815" font-family="Inter Display, Inter, Arial, sans-serif" font-size="34" font-weight="650" letter-spacing="-1.4">Slicefolio</text>
+    </g>
+  </g>
+</svg>
