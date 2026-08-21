@@ -1,0 +1,127 @@
+/* Arabic-only direction pass for the animated landing product journey. */
+
+html[dir='rtl'] .demo-stage {
+  direction: rtl;
+}
+
+/* The desktop story reads physically from right to left:
+   Capture -> Slice -> Publish. Explicit placement keeps the visual order
+   independent from browser grid auto-placement rules. */
+@media (min-width: 861px) {
+  html[dir='rtl'] .demo-capture-step {
+    grid-column: 5;
+    grid-row: 1;
+  }
+
+  html[dir='rtl'] .demo-flow-arrow-a {
+    grid-column: 4;
+    grid-row: 1;
+  }
+
+  html[dir='rtl'] .demo-slice-step {
+    grid-column: 3;
+    grid-row: 1;
+  }
+
+  html[dir='rtl'] .demo-flow-arrow-b {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  html[dir='rtl'] .demo-publish-step {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  /* Progress starts above Capture on the right and finishes above Publish. */
+  html[dir='rtl'] .demo-progress-line::after {
+    transform-origin: right center;
+  }
+
+  html[dir='rtl'] .demo-progress-dot-1 {
+    left: 92%;
+  }
+
+  html[dir='rtl'] .demo-progress-dot-2 {
+    left: 50%;
+  }
+
+  html[dir='rtl'] .demo-progress-dot-3 {
+    left: 8%;
+  }
+}
+
+/* Connection arrows follow the Arabic desktop journey. */
+html[dir='rtl'] .demo-flow-arrow svg {
+  transform: rotate(180deg);
+}
+
+html[dir='rtl'] .demo-flow-arrow span {
+  left: 12px;
+  right: 5px;
+  transform-origin: right center;
+}
+
+/* Inside the processor, the source remains on the right and generated
+   slices move toward the output area on the left. */
+html[dir='rtl'] .demo-processor-body {
+  direction: rtl;
+}
+
+html[dir='rtl'] .demo-input-strip {
+  border-right: 0;
+  border-left: 1px solid var(--line);
+}
+
+html[dir='rtl'] .demo-slice-output {
+  direction: rtl;
+}
+
+@keyframes demoSliceCardRtl {
+  0% {
+    opacity: 0;
+    transform: translateX(45px) rotate(90deg) scale(.8);
+  }
+
+  65% {
+    opacity: 1;
+    transform: translateX(-4px) rotate(-3deg) scale(1.03);
+  }
+
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+html[dir='rtl'] .demo-stage.is-running .demo-output-card {
+  animation-name: demoSliceCardRtl;
+}
+
+/* The Instagram mockup intentionally stays LTR, so its internal swipe cue
+   and carousel animation must not be mirrored with the surrounding Arabic UI. */
+html[dir='rtl'] .demo-instagram-card,
+html[dir='rtl'] .demo-ig-carousel,
+html[dir='rtl'] .demo-swipe-cue {
+  direction: ltr;
+}
+
+html[dir='rtl'] .demo-swipe-cue svg {
+  transform: none;
+}
+
+/* Mobile is a vertical story. Keep arrows pointing down instead of applying
+   the desktop RTL mirror on top of the existing 90deg parent rotation. */
+@media (max-width: 860px) {
+  html[dir='rtl'] .demo-flow-arrow svg {
+    transform: none;
+  }
+
+  html[dir='rtl'] .demo-flow-arrow span {
+    width: 28px;
+    left: 50%;
+    right: auto;
+    margin-left: -21px;
+    transform-origin: left center;
+  }
+}
