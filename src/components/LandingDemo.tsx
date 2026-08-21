@@ -264,7 +264,10 @@ export function LandingDemo({ locale = 'en' }: { locale?: Locale }) {
           entry.target.classList.toggle('is-active', entry.isIntersecting || reducedMotion);
         });
       },
-      { rootMargin: '-18% 0px -18% 0px', threshold: [0, 0.18, 0.45] },
+      {
+        rootMargin: '0px',
+        threshold: [0, 0.01, 0.18, 0.45],
+      },
     );
 
     scenes.forEach((scene) => observer.observe(scene));
@@ -286,13 +289,10 @@ export function LandingDemo({ locale = 'en' }: { locale?: Locale }) {
     const firstScene = sceneRefs.current[0];
     if (!firstScene) return;
 
-    sceneRefs.current.forEach((scene) => scene?.classList.remove('is-active'));
-    void firstScene.offsetWidth;
     firstScene.scrollIntoView({
       behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
       block: 'center',
     });
-    window.setTimeout(() => firstScene.classList.add('is-active'), 240);
   };
 
   const scenes = [
@@ -323,13 +323,13 @@ export function LandingDemo({ locale = 'en' }: { locale?: Locale }) {
     {
       number: '03',
       label: pick(locale, 'Publish', 'نشر'),
-      title: pick(locale, 'See the final story as a real carousel.', 'شاهد النتيجة ككاروسيل حقيقي جاهز للعرض.'),
+      title: pick(locale, 'Present the work as a carousel built to be swiped.', 'اعرض العمل ككاروسيل مصمم للتصفح بالسحب.'),
       description: pick(
         locale,
-        'The finished slides become a coherent Instagram presentation—not a pile of cropped images. View the sequence as your audience will experience it, then export and publish.',
-        'تتحول الشرائح النهائية إلى عرض متماسك على إنستغرام، وليس مجموعة صور مقصوصة. شاهد التسلسل كما سيختبره الجمهور ثم صدّر الشرائح وانشرها.',
+        'The result becomes a polished Instagram-ready sequence that lets viewers move through the website as a visual story instead of seeing one compressed, unreadable long image.',
+        'تتحول النتيجة إلى تسلسل مصقول وجاهز لإنستغرام، يتيح للمشاهد استكشاف الموقع كقصة بصرية بدل عرض صورة طويلة مضغوطة يصعب قراءتها.',
       ),
-      meta: [pick(locale, 'Carousel-ready', 'جاهز للكاروسيل'), pick(locale, 'Ordered presentation', 'عرض مرتب')],
+      meta: [pick(locale, 'Instagram-ready', 'جاهز لإنستغرام'), pick(locale, 'Swipeable sequence', 'تسلسل قابل للسحب')],
       visual: <PublishCard locale={locale} />,
     },
   ];
@@ -338,9 +338,13 @@ export function LandingDemo({ locale = 'en' }: { locale?: Locale }) {
     <section className="landing-demo landing-demo-scroll" ref={rootRef} aria-labelledby="landing-demo-title">
       <div className="landing-demo-heading">
         <div>
-          <span className="section-eyebrow">{pick(locale, 'See it in action', 'شاهدها عمليًا')}</span>
-          <h2 id="landing-demo-title">{pick(locale, 'From one long website to an Instagram carousel.', 'من موقع طويل واحد إلى كاروسيل جاهز لإنستغرام.')}</h2>
-          <p>{pick(locale, 'Scroll through the complete Slicefolio workflow—from the source design to the final carousel.', 'مرّر عبر رحلة Slicefolio كاملة، من التصميم الأصلي إلى الكاروسيل النهائي.')}</p>
+          <span className="section-eyebrow">{pick(locale, 'See the transformation', 'شاهد التحول')}</span>
+          <h2 id="landing-demo-title">{pick(locale, 'One design. Three moments. One continuous story.', 'تصميم واحد. ثلاث مراحل. قصة بصرية متصلة.')}</h2>
+          <p>{pick(
+            locale,
+            'Scroll through the Slicefolio workflow—from the original long page to ordered slices and a carousel ready to publish.',
+            'مرّر عبر رحلة Slicefolio، من الصفحة الطويلة الأصلية إلى الشرائح المرتبة ثم الكاروسيل الجاهز للنشر.',
+          )}</p>
         </div>
         <button type="button" className="demo-replay" onClick={replay}>
           <RotateCcw size={15} />
@@ -348,15 +352,15 @@ export function LandingDemo({ locale = 'en' }: { locale?: Locale }) {
         </button>
       </div>
 
-      <div className="demo-story-progress" aria-hidden="true">
-        <span className="demo-story-progress-track"><i /></span>
+      <nav className="demo-story-progress" aria-label={pick(locale, 'Slicefolio workflow progress', 'تقدم رحلة Slicefolio')}>
+        <div className="demo-story-progress-track" aria-hidden="true"><i /></div>
         {scenes.map((scene) => (
           <span className="demo-story-progress-point" data-step={scene.number} key={scene.number}>
             <b>{scene.number}</b>
             <small>{scene.label}</small>
           </span>
         ))}
-      </div>
+      </nav>
 
       <div className="demo-scroll-story">
         {scenes.map((scene, index) => (
@@ -375,12 +379,12 @@ export function LandingDemo({ locale = 'en' }: { locale?: Locale }) {
               </div>
             </div>
 
-            <div className="demo-scene-visual">
-              <div className="demo-scene-orbit" aria-hidden="true"><i /><i /><i /></div>
+            <div className="demo-scene-visual" aria-hidden="true">
+              <span className="demo-scene-orbit"><i /><i /><i /></span>
               <div className="demo-stage demo-scene-stage">
-                <div className="demo-step">{scene.visual}</div>
+                <article className="demo-step">{scene.visual}</article>
               </div>
-              <span className="demo-scene-shadow" aria-hidden="true" />
+              <span className="demo-scene-shadow" />
             </div>
           </article>
         ))}
