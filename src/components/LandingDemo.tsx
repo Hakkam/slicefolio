@@ -3,6 +3,7 @@ import { ArrowRight, Instagram, Layers3, RotateCcw, ScanLine } from 'lucide-reac
 import { pick, type Locale } from '../i18n';
 import './LandingDemo.css';
 import './LandingDemoPolish.css';
+import './LandingDemoBalance.css';
 
 function SampleWebsite({ locale }: { locale: Locale }) {
   const isArabic = locale === 'ar';
@@ -186,6 +187,12 @@ export function LandingDemo({ locale = 'en' }: { locale?: Locale }) {
           </header>
 
           <div className={`demo-instagram-card${isArabic ? ' demo-instagram-card-ar' : ''}`}>
+            <div className="demo-instagram-appbar">
+              <Instagram size={13} strokeWidth={2} />
+              <strong>Instagram</strong>
+              <span aria-hidden="true">⌄</span>
+            </div>
+
             <div className="demo-instagram-header">
               <div className="demo-ig-avatar">SF</div>
               <div><strong>yourstudio</strong><span>{pick(locale, 'Portfolio', 'معرض أعمال')}</span></div>
@@ -211,8 +218,6 @@ export function LandingDemo({ locale = 'en' }: { locale?: Locale }) {
             </div>
             <div className="demo-ig-dots" aria-hidden="true"><i /><i /><i /><i /></div>
           </div>
-
-          <div className="demo-published-badge"><Instagram size={14} />{pick(locale, 'Ready to post', 'جاهز للنشر')}</div>
         </article>
       </div>
     </section>
