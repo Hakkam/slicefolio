@@ -1,0 +1,175 @@
+@font-face {
+  font-family: 'IBM Plex Sans Arabic';
+  src: url('./fonts/ibm-plex-sans-arabic/IBMPlexSansArabic-Regular.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IBM Plex Sans Arabic';
+  src: url('./fonts/ibm-plex-sans-arabic/IBMPlexSansArabic-Medium.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IBM Plex Sans Arabic';
+  src: url('./fonts/ibm-plex-sans-arabic/IBMPlexSansArabic-SemiBold.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IBM Plex Sans Arabic';
+  src: url('./fonts/ibm-plex-sans-arabic/IBMPlexSansArabic-Bold.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+
+.language-switch {
+  flex: 0 0 auto;
+  min-height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 10px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.5);
+  color: var(--muted-strong);
+  text-decoration: none;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color 140ms ease, color 140ms ease, background-color 140ms ease;
+}
+
+.language-switch:hover {
+  border-color: var(--line-strong);
+  background: #fff;
+  color: var(--ink);
+}
+
+html[lang='ar'] body,
+html[lang='ar'] button,
+html[lang='ar'] input,
+html[lang='ar'] summary {
+  font-family: 'IBM Plex Sans Arabic', Tahoma, Arial, sans-serif;
+}
+
+html[lang='ar'] .brand {
+  font-family: 'Inter Display', Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+html[dir='rtl'] .hero-copy,
+html[dir='rtl'] .landing-section-intro,
+html[dir='rtl'] .fact-item,
+html[dir='rtl'] .faq-list,
+html[dir='rtl'] .control-section,
+html[dir='rtl'] .preview-toolbar,
+html[dir='rtl'] .thumbnail-heading,
+html[dir='rtl'] .landing-demo-heading {
+  text-align: right;
+}
+
+html[dir='rtl'] .topbar-note {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+html[dir='rtl'] .topbar-actions {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+html[dir='rtl'] .workspace-file-pill {
+  margin-left: 0;
+  margin-right: 12px;
+  padding-left: 0;
+  padding-right: 22px;
+  border-left: 0;
+  border-right: 1px solid var(--line);
+}
+
+html[dir='rtl'] .controls-panel {
+  border-right: 0;
+  border-left: 1px solid var(--line);
+}
+
+html[dir='rtl'] .fact-item + .fact-item {
+  padding-left: 0;
+  padding-right: 24px;
+  border-left: 0;
+  border-right: 1px solid var(--line);
+}
+
+html[dir='rtl'] .faq-list summary {
+  padding-right: 0;
+  padding-left: 36px;
+}
+
+html[dir='rtl'] .faq-list summary::after {
+  right: auto;
+  left: 4px;
+}
+
+html[dir='rtl'] .selection-help {
+  border-left: 0;
+  border-right: 2px solid var(--ink);
+}
+
+html[dir='rtl'] .demo-flow-arrow svg,
+html[dir='rtl'] .demo-swipe-cue svg {
+  transform: rotate(180deg);
+}
+
+html[dir='rtl'] .demo-flow-arrow span {
+  left: 12px;
+  right: 5px;
+  transform-origin: right;
+}
+
+html[dir='rtl'] .demo-site,
+html[dir='rtl'] .demo-instagram-card {
+  direction: ltr;
+}
+
+html[dir='rtl'] .demo-step-label,
+html[dir='rtl'] .demo-processor-topbar,
+html[dir='rtl'] .demo-processor-footer,
+html[dir='rtl'] .demo-published-badge {
+  direction: rtl;
+}
+
+html[dir='rtl'] .preview-actions {
+  direction: rtl;
+}
+
+html[dir='rtl'] .thumbnail-strip {
+  direction: rtl;
+}
+
+@media (max-width: 860px) {
+  html[dir='rtl'] .fact-item,
+  html[dir='rtl'] .fact-item + .fact-item {
+    padding-right: 0;
+    border-right: 0;
+  }
+
+  html[dir='rtl'] .fact-item + .fact-item {
+    border-top: 1px solid var(--line);
+  }
+}
+
+@media (max-width: 680px) {
+  .language-switch {
+    min-height: 32px;
+    padding-inline: 9px;
+    font-size: 10px;
+  }
+}
