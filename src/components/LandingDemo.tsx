@@ -4,45 +4,47 @@ import { pick, type Locale } from '../i18n';
 import './LandingDemo.css';
 import './LandingDemoPolish.css';
 
-function SampleWebsite() {
+function SampleWebsite({ locale }: { locale: Locale }) {
+  const isArabic = locale === 'ar';
+
   return (
-    <div className="demo-site" aria-hidden="true">
+    <div className={`demo-site${isArabic ? ' demo-site-ar' : ''}`} aria-hidden="true">
       <div className="demo-site-nav">
         <span className="demo-site-logo" />
         <div><i /><i /><i /></div>
-        <b>Contact</b>
+        <b>{pick(locale, 'Contact', 'تواصل')}</b>
       </div>
       <div className="demo-site-hero">
-        <span className="demo-site-kicker">Independent studio</span>
-        <strong>Designing digital experiences with clarity.</strong>
-        <p>Strategy · Identity · Product</p>
+        <span className="demo-site-kicker">{pick(locale, 'Independent studio', 'استوديو مستقل')}</span>
+        <strong>{pick(locale, 'Designing digital experiences with clarity.', 'نصمم تجارب رقمية واضحة ومؤثرة.')}</strong>
+        <p>{pick(locale, 'Strategy · Identity · Product', 'استراتيجية · هوية · منتج')}</p>
         <div className="demo-site-hero-art">
           <span />
           <span />
         </div>
       </div>
       <div className="demo-site-intro">
-        <span>Selected work</span>
-        <strong>Built to feel useful, memorable, and unmistakably yours.</strong>
+        <span>{pick(locale, 'Selected work', 'أعمال مختارة')}</span>
+        <strong>{pick(locale, 'Built to feel useful, memorable, and unmistakably yours.', 'نصمم أعمالًا مفيدة، راسخة، وتعكس هويتك بوضوح.')}</strong>
       </div>
       <div className="demo-site-project demo-project-a">
         <div className="demo-project-art"><span /><span /></div>
-        <div><small>01 · Product</small><strong>Northline</strong></div>
+        <div><small>{pick(locale, '01 · Product', '01 · منتج')}</small><strong>{pick(locale, 'Northline', 'نورث لاين')}</strong></div>
       </div>
       <div className="demo-site-project demo-project-b">
         <div className="demo-project-art"><span /><span /><span /></div>
-        <div><small>02 · Commerce</small><strong>Kinfolk Goods</strong></div>
+        <div><small>{pick(locale, '02 · Commerce', '02 · تجارة')}</small><strong>{pick(locale, 'Kinfolk Goods', 'كينفولك')}</strong></div>
       </div>
       <div className="demo-site-quote">
         <span>“</span>
-        <strong>Good design creates momentum.</strong>
+        <strong>{pick(locale, 'Good design creates momentum.', 'التصميم الجيد يصنع الزخم.')}</strong>
       </div>
       <div className="demo-site-project demo-project-c">
         <div className="demo-project-art"><span /><span /></div>
-        <div><small>03 · Editorial</small><strong>Field Notes</strong></div>
+        <div><small>{pick(locale, '03 · Editorial', '03 · تحريري')}</small><strong>{pick(locale, 'Field Notes', 'ملاحظات ميدانية')}</strong></div>
       </div>
       <div className="demo-site-footer">
-        <strong>Start a project</strong>
+        <strong>{pick(locale, 'Start a project', 'ابدأ مشروعًا')}</strong>
         <span>hello@studio.co</span>
       </div>
     </div>
@@ -64,6 +66,7 @@ export function LandingDemo({ locale = 'en' }: { locale?: Locale }) {
   const rootRef = useRef<HTMLElement>(null);
   const [isActive, setIsActive] = useState(false);
   const [run, setRun] = useState(0);
+  const isArabic = locale === 'ar';
 
   useEffect(() => {
     const node = rootRef.current;
@@ -128,7 +131,7 @@ export function LandingDemo({ locale = 'en' }: { locale?: Locale }) {
               <ScanLine size={13} />
             </div>
             <div className="demo-browser-viewport">
-              <div className="demo-site-track"><SampleWebsite /></div>
+              <div className="demo-site-track"><SampleWebsite locale={locale} /></div>
               <div className="demo-capture-scan"><span>{pick(locale, 'FULL PAGE', 'الصفحة كاملة')}</span></div>
               <div className="demo-capture-ruler" aria-hidden="true"><i /><i /><i /><i /><i /></div>
             </div>
@@ -151,7 +154,7 @@ export function LandingDemo({ locale = 'en' }: { locale?: Locale }) {
 
             <div className="demo-processor-body">
               <div className="demo-input-strip" aria-hidden="true">
-                <div className="demo-input-page"><SampleWebsite /></div>
+                <div className="demo-input-page"><SampleWebsite locale={locale} /></div>
                 <span className="demo-cut-line demo-cut-line-1" />
                 <span className="demo-cut-line demo-cut-line-2" />
                 <span className="demo-cut-line demo-cut-line-3" />
@@ -182,7 +185,7 @@ export function LandingDemo({ locale = 'en' }: { locale?: Locale }) {
             <div><strong>{pick(locale, 'Publish', 'نشر')}</strong></div>
           </header>
 
-          <div className="demo-instagram-card">
+          <div className={`demo-instagram-card${isArabic ? ' demo-instagram-card-ar' : ''}`}>
             <div className="demo-instagram-header">
               <div className="demo-ig-avatar">SF</div>
               <div><strong>yourstudio</strong><span>{pick(locale, 'Portfolio', 'معرض أعمال')}</span></div>
@@ -191,7 +194,10 @@ export function LandingDemo({ locale = 'en' }: { locale?: Locale }) {
 
             <div className="demo-instagram-media">
               <div className="demo-ig-carousel">
-                <div className="demo-ig-slide demo-ig-cover"><span>{pick(locale, 'WEBSITE', 'دراسة حالة')}<br />{pick(locale, 'CASE STUDY', 'موقع')}</span><strong>Northline®</strong></div>
+                <div className="demo-ig-slide demo-ig-cover">
+                  <span>{pick(locale, 'WEBSITE CASE STUDY', 'دراسة حالة موقع')}</span>
+                  <strong>{pick(locale, 'Northline®', 'نورث لاين®')}</strong>
+                </div>
                 {[1, 2, 3].map((item) => (
                   <div className="demo-ig-slide demo-ig-body" key={item}><SliceArtwork variant={item} /></div>
                 ))}
