@@ -104,10 +104,11 @@ async function loadPdf(file: File, onProgress?: ProgressCallback): Promise<Sourc
     throw new Error('This PDF could not be opened. It may be corrupt or password protected.');
   }
 
+  const pageCount = pdf.numPages;
   const segments: Omit<SourceSegment, 'normalizedHeight'>[] = [];
 
   try {
-    for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber += 1) {
+    for (let pageNumber = 1; pageNumber <= pageCount; pageNumber += 1) {
       const page = await pdf.getPage(pageNumber);
       const baseViewport = page.getViewport({ scale: 1 });
       const targetWidth = Math.min(
@@ -147,8 +148,8 @@ async function loadPdf(file: File, onProgress?: ProgressCallback): Promise<Sourc
           height: canvas.height,
         });
 
-        const pageProgress = (pageNumber - 1 + (tileIndex + 1) / tileCount) / pdf.numPages;
-        onProgress?.(0.12 + pageProgress * 0.78, `Rendering PDF · page ${pageNumber} of ${pdf.numPages}`);
+        const pageProgress = (pageNumber - 1 + (tileIndex + 1) / tileCount) / pageCount;
+        onProgress?.(0.12 + pageProgress * 0.78, `Rendering PDF · page ${pageNumber} of ${pageCount}`);
       }
 
       page.cleanup();
@@ -157,7 +158,7 @@ async function loadPdf(file: File, onProgress?: ProgressCallback): Promise<Sourc
     await pdf.destroy();
   }
 
-  return normalizeSegments(file.name, 'pdf', file.size, pdf.numPages, segments);
+  return normalizeSegments(file.name, 'pdf', file.size, pageCount, segments);
 }
 
 export async function loadSource(
