@@ -1,4 +1,3 @@
-import JSZip from 'jszip';
 import type { ProgressCallback, SliceAsset } from '../types';
 
 function triggerDownload(blob: Blob, fileName: string) {
@@ -23,6 +22,7 @@ export async function downloadAllSlices(
 ) {
   if (!slices.length) return;
 
+  const { default: JSZip } = await import('jszip');
   const zip = new JSZip();
   slices.forEach((slice) => zip.file(slice.fileName, slice.blob));
 
