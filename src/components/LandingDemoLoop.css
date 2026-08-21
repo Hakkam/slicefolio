@@ -12,6 +12,7 @@
 .demo-scroll-scene.is-active .demo-browser,
 .demo-scroll-scene.is-active .demo-processor,
 .demo-scroll-scene.is-active .demo-instagram-card {
+  animation: demoCardBreath 5.8s ease-in-out infinite;
   animation-play-state: running;
 }
 
@@ -63,18 +64,41 @@
   animation-play-state: paused;
 }
 
+.demo-scroll-scene.is-active .demo-input-page {
+  animation: demoInputLoop 7.8s cubic-bezier(.2, .8, .2, 1) infinite;
+  animation-play-state: running;
+}
+
 .demo-scroll-scene .demo-cut-line {
-  animation: demoCutLineLoop 7.8s ease infinite;
-  animation-play-state: paused;
   opacity: 0;
+  animation-name: demoCutLineLoop;
+  animation-duration: 7.8s;
+  animation-timing-function: ease;
+  animation-iteration-count: infinite;
+  animation-play-state: paused;
 }
 
 .demo-scroll-scene .demo-cut-line-1 { animation-delay: .25s; }
 .demo-scroll-scene .demo-cut-line-2 { animation-delay: .65s; }
 .demo-scroll-scene .demo-cut-line-3 { animation-delay: 1.05s; }
 
+.demo-scroll-scene.is-active .demo-cut-line {
+  animation-name: demoCutLineLoop;
+  animation-duration: 7.8s;
+  animation-timing-function: ease;
+  animation-iteration-count: infinite;
+  animation-play-state: running;
+}
+
+.demo-scroll-scene.is-active .demo-cut-line-1 { animation-delay: .25s; }
+.demo-scroll-scene.is-active .demo-cut-line-2 { animation-delay: .65s; }
+.demo-scroll-scene.is-active .demo-cut-line-3 { animation-delay: 1.05s; }
+
 .demo-scroll-scene .demo-output-card {
-  animation: demoSliceCardLoop 7.8s cubic-bezier(.17, .84, .44, 1) infinite;
+  animation-name: demoSliceCardLoop;
+  animation-duration: 7.8s;
+  animation-timing-function: cubic-bezier(.17, .84, .44, 1);
+  animation-iteration-count: infinite;
   animation-play-state: paused;
 }
 
@@ -83,20 +107,18 @@
 .demo-scroll-scene .demo-output-card-3 { animation-delay: 1.56s; }
 .demo-scroll-scene .demo-output-card-4 { animation-delay: 1.94s; }
 
-.demo-scroll-scene.is-active .demo-input-page {
-  animation: demoInputLoop 7.8s cubic-bezier(.2, .8, .2, 1) infinite;
-  animation-play-state: running;
-}
-
-.demo-scroll-scene.is-active .demo-cut-line {
-  animation: demoCutLineLoop 7.8s ease infinite;
-  animation-play-state: running;
-}
-
 .demo-scroll-scene.is-active .demo-output-card {
-  animation: demoSliceCardLoop 7.8s cubic-bezier(.17, .84, .44, 1) infinite;
+  animation-name: demoSliceCardLoop;
+  animation-duration: 7.8s;
+  animation-timing-function: cubic-bezier(.17, .84, .44, 1);
+  animation-iteration-count: infinite;
   animation-play-state: running;
 }
+
+.demo-scroll-scene.is-active .demo-output-card-1 { animation-delay: .8s; }
+.demo-scroll-scene.is-active .demo-output-card-2 { animation-delay: 1.18s; }
+.demo-scroll-scene.is-active .demo-output-card-3 { animation-delay: 1.56s; }
+.demo-scroll-scene.is-active .demo-output-card-4 { animation-delay: 1.94s; }
 
 html[dir='rtl'] .demo-scroll-scene .demo-output-card,
 html[dir='rtl'] .demo-scroll-scene.is-active .demo-output-card {
