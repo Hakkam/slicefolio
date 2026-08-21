@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { ControlsPanel } from './components/ControlsPanel';
 import { Dropzone } from './components/Dropzone';
+import { LandingDemo } from './components/LandingDemo';
 import { Preview } from './components/Preview';
 import type { SliceAsset, SliceOptions, SourceDocument } from './types';
 
@@ -275,6 +276,8 @@ export default function App() {
               </button>
             </div>
           ) : null}
+
+          <LandingDemo />
 
           <section className="workflow-strip" aria-labelledby="workflow-title">
             <h2 id="workflow-title" className="visually-hidden">How Slicefolio works</h2>
