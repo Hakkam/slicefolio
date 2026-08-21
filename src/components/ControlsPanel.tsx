@@ -12,26 +12,25 @@ const MODES: Array<{
   value: OutputMode;
   title: string;
   detail: string;
+  glyphClass: string;
 }> = [
   {
-    value: 'mixed',
-    title: 'Mixed carousel',
-    detail: 'Portrait hero · Rotated landscape body',
+    value: 'portrait',
+    title: 'Portrait 4:5',
+    detail: '1080 × 1350',
+    glyphClass: 'ratio-portrait',
   },
   {
-    value: 'portrait',
-    title: 'Portrait only',
-    detail: '4:5 · 1080 × 1350',
+    value: 'tall',
+    title: 'Tall 3:4',
+    detail: '1080 × 1440',
+    glyphClass: 'ratio-portrait',
   },
   {
     value: 'square',
-    title: 'Square only',
-    detail: '1:1 · 1080 × 1080',
-  },
-  {
-    value: 'landscape',
-    title: 'Landscape only',
-    detail: '1.91:1 · 1080 × 566',
+    title: 'Square 1:1',
+    detail: '1080 × 1080',
+    glyphClass: 'ratio-square',
   },
 ];
 
@@ -101,7 +100,7 @@ export function ControlsPanel({
                 className={`mode-option${active ? ' is-active' : ''}`}
                 onClick={() => update('mode', mode.value)}
               >
-                <span className={`ratio-glyph ratio-${mode.value}`} aria-hidden="true" />
+                <span className={`ratio-glyph ${mode.glyphClass}`} aria-hidden="true" />
                 <span className="mode-copy">
                   <strong>{mode.title}</strong>
                   <span>{mode.detail}</span>
@@ -114,11 +113,9 @@ export function ControlsPanel({
           })}
         </div>
 
-        {options.mode === 'mixed' ? (
-          <p className="control-help">
-            Slide 01 is a portrait hero cover. Slide 02 restarts from the top of the source, then the full design continues left-to-right across 90° rotated landscape slides.
-          </p>
-        ) : null}
+        <p className="control-help">
+          Every format uses the same sequence: an independent hero cover, then the full source restarts from the top and continues across 90° rotated slides.
+        </p>
       </section>
 
       <section className="control-section compact-section">
