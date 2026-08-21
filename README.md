@@ -1,11 +1,13 @@
 # Slicefolio
 
-Slicefolio is a browser-native tool for turning full-page website designs into Instagram-ready carousel slices.
+Slicefolio is a browser-based tool for UI/UX designers, web designers, agencies, and creative professionals that converts full-page website designs, PDFs, and long images into Instagram-ready carousel slides.
+
+The public product name is **Slicefolio**. `insta-mockup` is only the repository working name.
 
 ## MVP behavior
 
 - Upload PDF, PNG, JPG, or WebP.
-- Process everything locally in the browser.
+- Process the selected file locally in the browser; the source file is not uploaded to a Slicefolio server.
 - Choose one of three Instagram carousel sizes:
   - Portrait 4:5 — 1080 × 1350
   - Tall 3:4 — 1080 × 1440
@@ -21,7 +23,7 @@ Slicefolio is a browser-native tool for turning full-page website designs into I
 - Padding can be linked across all sides or controlled independently for top, right, bottom, and left.
 - Export PNG or JPEG.
 - Download one slide or package the full ordered sequence as a ZIP.
-- The landing page currently uses the original restrained visual direction. Experimental visual redesign work is deferred.
+- The landing page keeps the original restrained visual direction. Experimental visual redesign work remains deferred.
 - The landing footer includes a development credit linking to hakkam.com.
 
 ## Stack
@@ -46,9 +48,45 @@ Create a production build with:
 npm run build
 ```
 
+## Production SEO configuration
+
+The final public site URL is intentionally configured in one place instead of being hardcoded across metadata files.
+
+Set `SLICEFOLIO_SITE_URL` at build time to the canonical production origin:
+
+```bash
+SLICEFOLIO_SITE_URL=https://your-domain.example npm run build
+```
+
+When this value is present, the Vite build:
+
+- adds a self-referencing canonical URL to the initial HTML;
+- adds the absolute Open Graph page and image URLs;
+- connects the `WebSite` and `WebApplication` structured-data entities to the canonical URL;
+- emits a root `sitemap.xml` containing the canonical homepage URL;
+- references that sitemap from `robots.txt`.
+
+When the final production URL is not configured, the build deliberately omits canonical and sitemap URLs rather than publishing an incorrect production identity. `robots.txt` still allows crawling, and all non-URL metadata remains available.
+
+A branded `1200 × 630` Open Graph image and favicon live in `public/` and are copied into the production build by Vite.
+
+## Search and machine-readable foundation
+
+The landing page includes meaningful product content in the initial HTML response, so the product definition, H1, supported formats, supported output sizes, local-processing explanation, workflow, and common product questions do not depend on client-side rendering to exist.
+
+Structured data uses factual Schema.org entities only:
+
+- `WebApplication` for Slicefolio;
+- `WebSite` when a canonical production URL is configured;
+- `Person` for the developer relationship to Hakkam (`https://hakkam.com`).
+
+No review, rating, pricing, customer-count, award, encryption, compliance, or other unsupported claims are included.
+
+No `llms.txt` file is included as an SEO requirement. It can be reconsidered later if a target system documents a concrete use for it, but it is not treated as a ranking mechanism.
+
 ## Processing model
 
-Slicefolio never sends the selected file to an API or storage service. PDF rendering, image decoding, slicing, preview generation, image encoding, and ZIP packaging all happen in the user's browser.
+Slicefolio does not send the selected file to an API or storage service. PDF rendering, image decoding, slicing, preview generation, image encoding, and ZIP packaging happen in the user's browser.
 
 The cover is a separate hero asset and does not consume source content from the body sequence. Body slicing always starts again at source position `0`.
 
