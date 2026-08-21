@@ -441,3 +441,29 @@
     flex-basis: 104px;
   }
 }
+
+/* Keep the preview container at the generated slide's real aspect ratio. */
+.slide-preview-frame,
+.slide-preview-frame.body,
+.slide-preview-frame.cover {
+  width: auto;
+  height: min(390px, 53vh);
+  max-width: 100%;
+  max-height: none;
+}
+
+@media (max-width: 680px) {
+  .slide-preview-frame,
+  .slide-preview-frame.body,
+  .slide-preview-frame.cover {
+    height: min(300px, 46vh);
+  }
+}
+
+@media (max-width: 430px) {
+  .slide-preview-frame,
+  .slide-preview-frame.body,
+  .slide-preview-frame.cover {
+    height: min(260px, 42vh);
+  }
+}
