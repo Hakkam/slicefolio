@@ -6,13 +6,15 @@ Slicefolio is a browser-native tool for turning full-page website designs into I
 
 - Upload PDF, PNG, JPG, or WebP.
 - Process everything locally in the browser.
-- Blindly slice the source from top to bottom.
-- Default mixed output:
-  - Slide 01 is an independent 1080 × 1350 portrait hero cover created from the top of the source.
+- Choose one of three Instagram carousel sizes:
+  - Portrait 4:5 — 1080 × 1350
+  - Tall 3:4 — 1080 × 1440
+  - Square 1:1 — 1080 × 1080
+- Every format uses the same carousel structure:
+  - Slide 01 is an independent hero cover using the selected dimensions.
   - Slide 02 restarts from the first pixel of the source.
-  - Slide 02 onward uses 1080 × 566 landscape frames with the source rotated 90° counter-clockwise.
+  - Slide 02 onward keeps the same selected dimensions and rotates the source 90° counter-clockwise.
   - The body sequence advances through the complete source with no skipped, duplicated, or overlapping body regions.
-- Optional portrait-only, square-only, and landscape-only presets remain unrotated.
 - Keep the complete source represented in the body sequence; never discard content to fill a frame.
 - Fill unused space on the final slide with a configurable background color.
 - Export PNG or JPEG.
@@ -44,27 +46,23 @@ npm run build
 
 Slicefolio never sends the selected file to an API or storage service. PDF rendering, image decoding, slicing, preview generation, image encoding, and ZIP packaging all happen in the user's browser.
 
-### Standard presets
+The cover is a separate hero asset and does not consume source content from the body sequence. Body slicing always starts again at source position `0`.
 
-For portrait, square, and landscape-only modes, Slicefolio calculates how much source height fits when the complete source width is scaled to the Instagram output width:
+For the cover, the complete source width maps to the selected output width:
 
 ```text
 outputScale = outputWidth / sourceWidth
-sourceSliceHeight = outputHeight / outputScale
+coverSourceHeight = outputHeight / outputScale
 ```
 
-### Mixed mode
-
-The cover is a separate hero asset and does not consume source content from the body sequence. Body slicing starts again at source position `0`.
-
-Because the body source is rotated 90° inside a landscape frame, the complete source width maps to the output frame height:
+For the body sequence, the source is rotated 90° inside the selected Instagram frame, so the complete source width maps to the output frame height:
 
 ```text
 outputScale = outputHeight / sourceWidth
-sourceSliceHeight = outputWidth / outputScale
+bodySourceSliceHeight = outputWidth / outputScale
 ```
 
-A body cursor then advances through the normalized source from the first pixel to the last. Rotating counter-clockwise maps the original top-to-bottom direction to left-to-right inside each landscape slide. The final partial slice remains intact and the unused output area is filled with the selected background color.
+A body cursor advances through the normalized source from the first pixel to the last. Rotating counter-clockwise maps the original top-to-bottom direction to left-to-right inside each carousel slide. The final partial slice remains intact and the unused output area is filled with the selected background color.
 
 Long PDF pages are rendered in internal vertical tiles instead of one extremely tall intermediate canvas. This reduces browser canvas-limit failures while keeping the visual order continuous.
 
