@@ -1,4 +1,4 @@
-export type OutputMode = 'mixed' | 'portrait' | 'square' | 'landscape';
+export type OutputMode = 'portrait' | 'tall' | 'square';
 export type ExportFormat = 'png' | 'jpeg';
 export type SliceRotation = 0 | -90;
 
