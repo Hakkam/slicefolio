@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react';
 
 const SITE_NAME = 'Slicefolio';
 const CREATOR_URL = 'https://hakkam.com';
+const ALLOWED_DEV_HOSTS = ['3486-193-243-210-162.ngrok-free.app'];
 
 const SEO = {
   en: {
@@ -206,6 +207,12 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [react(), createSeoPlugin(siteUrl)],
+    server: {
+      allowedHosts: ALLOWED_DEV_HOSTS,
+    },
+    preview: {
+      allowedHosts: ALLOWED_DEV_HOSTS,
+    },
     build: {
       rollupOptions: {
         input: {
