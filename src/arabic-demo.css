@@ -33,7 +33,6 @@ html[dir='rtl'] .demo-stage {
     grid-row: 1;
   }
 
-  /* Progress starts above Capture on the right and finishes above Publish. */
   html[dir='rtl'] .demo-progress-line::after {
     transform-origin: right center;
   }
@@ -51,7 +50,6 @@ html[dir='rtl'] .demo-stage {
   }
 }
 
-/* Connection arrows follow the Arabic desktop journey. */
 html[dir='rtl'] .demo-flow-arrow svg {
   transform: rotate(180deg);
 }
@@ -129,8 +127,7 @@ html[dir='rtl'] .demo-site-ar .demo-site-footer span {
   unicode-bidi: isolate;
 }
 
-/* Inside the processor, the source remains on the right and generated
-   slices move toward the output area on the left. */
+/* Inside the processor, source remains on the right and output on the left. */
 html[dir='rtl'] .demo-processor-body {
   direction: rtl;
 }
@@ -172,6 +169,13 @@ html[dir='rtl'] .demo-instagram-card-ar {
   text-align: right;
 }
 
+/* Phone chrome and the Instagram brand remain spatially LTR. */
+html[dir='rtl'] .demo-instagram-card-ar .demo-phone-status,
+html[dir='rtl'] .demo-instagram-card-ar .demo-instagram-appbar {
+  direction: ltr;
+  text-align: left;
+}
+
 html[dir='rtl'] .demo-instagram-card-ar .demo-instagram-header {
   direction: rtl;
 }
@@ -190,8 +194,7 @@ html[dir='rtl'] .demo-instagram-card-ar .demo-instagram-header b {
   justify-self: start;
 }
 
-/* The carousel transform remains LTR because its animation translates by
-   negative X values. Only the Arabic cover typography is RTL. */
+/* Carousel transform remains LTR because the animation translates on X. */
 html[dir='rtl'] .demo-ig-carousel {
   direction: ltr;
 }
@@ -241,12 +244,33 @@ html[dir='rtl'] .demo-instagram-card-ar .demo-ig-counter {
   unicode-bidi: isolate;
 }
 
+html[dir='rtl'] .demo-instagram-card-ar .demo-instagram-cta {
+  direction: rtl;
+  text-align: right;
+}
+
+html[dir='rtl'] .demo-instagram-card-ar .demo-instagram-cta svg {
+  transform: rotate(180deg);
+}
+
 html[dir='rtl'] .demo-instagram-card-ar .demo-instagram-actions {
   direction: rtl;
 }
 
-/* Mobile is a vertical story. Keep arrows pointing down instead of applying
-   the desktop RTL mirror on top of the existing 90deg parent rotation. */
+html[dir='rtl'] .demo-instagram-card-ar .demo-instagram-caption {
+  direction: rtl;
+  text-align: right;
+  line-height: 1.55;
+}
+
+html[dir='rtl'] .demo-instagram-card-ar .demo-instagram-caption strong {
+  margin-right: 0;
+  margin-left: 4px;
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+/* Mobile is a vertical story. */
 @media (max-width: 860px) {
   html[dir='rtl'] .demo-flow-arrow svg {
     transform: none;
