@@ -1,0 +1,698 @@
+/* Scroll-driven product journey -------------------------------------------------
+   This layer intentionally comes after the legacy demo styles. It turns the
+   previous three-column animation into three independent scroll scenes while
+   reusing the same visual mockups and internal animation keyframes. */
+
+.landing-demo-scroll {
+  --story-progress: 0;
+  margin-top: 76px;
+  padding-top: 52px;
+}
+
+.landing-demo-scroll .landing-demo-heading {
+  margin-bottom: 28px;
+}
+
+.landing-demo-scroll .landing-demo-heading > div {
+  max-width: 720px;
+}
+
+.landing-demo-scroll .landing-demo-heading h2 {
+  max-width: 700px;
+  font-size: clamp(30px, 3.7vw, 50px);
+  line-height: 1.04;
+}
+
+.landing-demo-scroll .landing-demo-heading p {
+  max-width: 620px;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+/* Sticky journey rail --------------------------------------------------------- */
+
+.demo-story-progress {
+  position: sticky;
+  top: 14px;
+  z-index: 12;
+  width: 100%;
+  min-height: 54px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: center;
+  margin: 0 0 10px;
+  padding: 8px 14px;
+  border: 1px solid rgba(24, 24, 21, 0.1);
+  border-radius: 15px;
+  background: color-mix(in srgb, var(--surface) 86%, transparent);
+  box-shadow: 0 10px 30px rgba(24, 24, 21, 0.07);
+  backdrop-filter: blur(18px);
+  overflow: hidden;
+}
+
+.demo-story-progress-track {
+  position: absolute;
+  z-index: 0;
+  left: 9%;
+  right: 9%;
+  top: 50%;
+  height: 1px;
+  transform: translateY(-50%);
+  background: rgba(24, 24, 21, 0.13);
+}
+
+.demo-story-progress-track i {
+  position: absolute;
+  inset: 0;
+  display: block;
+  background: var(--ink);
+  transform: scaleX(var(--story-progress));
+  transform-origin: left center;
+  transition: transform 70ms linear;
+}
+
+.demo-story-progress-point {
+  position: relative;
+  z-index: 2;
+  justify-self: center;
+  min-width: 92px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 5px 8px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--surface) 94%, transparent);
+  color: var(--muted);
+  transition: color 240ms ease, transform 240ms ease, background-color 240ms ease;
+}
+
+.demo-story-progress-point b {
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line-strong);
+  border-radius: 7px;
+  background: #fff;
+  color: var(--muted-strong);
+  font-size: 8px;
+  font-weight: 850;
+  transition: color 240ms ease, border-color 240ms ease, background-color 240ms ease;
+}
+
+.demo-story-progress-point small {
+  font-size: 9px;
+  line-height: 1.2;
+  font-weight: 750;
+  white-space: nowrap;
+}
+
+.landing-demo-scroll[data-scene='1'] .demo-story-progress-point[data-step='01'],
+.landing-demo-scroll[data-scene='2'] .demo-story-progress-point[data-step='02'],
+.landing-demo-scroll[data-scene='3'] .demo-story-progress-point[data-step='03'] {
+  color: var(--ink);
+  background: #fff;
+  transform: translateY(-1px);
+}
+
+.landing-demo-scroll[data-scene='1'] .demo-story-progress-point[data-step='01'] b,
+.landing-demo-scroll[data-scene='2'] .demo-story-progress-point[data-step='02'] b,
+.landing-demo-scroll[data-scene='3'] .demo-story-progress-point[data-step='03'] b {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: #fff;
+}
+
+/* Three scroll scenes --------------------------------------------------------- */
+
+.demo-scroll-story {
+  position: relative;
+  width: 100%;
+}
+
+.demo-scroll-scene {
+  --scene-focus: 0;
+  --scene-opacity: .3;
+  --scene-scale: .94;
+  --scene-y: 40px;
+  --scene-visual-x: 80px;
+  --scene-copy-x: -50px;
+  --scene-tilt: 2deg;
+  --scene-glow: 0;
+  position: relative;
+  min-height: clamp(650px, 88vh, 840px);
+  display: grid;
+  grid-template-columns: minmax(0, .88fr) minmax(380px, 1.12fr);
+  grid-template-areas: 'copy visual';
+  align-items: center;
+  gap: clamp(52px, 8vw, 112px);
+  padding: clamp(72px, 10vh, 112px) 4px;
+  border-top: 1px solid var(--line);
+  isolation: isolate;
+}
+
+.demo-scroll-scene:first-child {
+  border-top-color: transparent;
+}
+
+.demo-scroll-scene.is-reverse {
+  grid-template-columns: minmax(380px, 1.12fr) minmax(0, .88fr);
+  grid-template-areas: 'visual copy';
+}
+
+.demo-scroll-scene::before {
+  content: '';
+  position: absolute;
+  z-index: -2;
+  width: min(52vw, 620px);
+  aspect-ratio: 1;
+  left: 58%;
+  top: 50%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 90, 54, 0.11), rgba(255, 90, 54, 0.025) 42%, transparent 72%);
+  transform: translate(-50%, -50%) scale(.92);
+  opacity: var(--scene-glow);
+  filter: blur(18px);
+  pointer-events: none;
+}
+
+.demo-scroll-scene.is-reverse::before {
+  left: 37%;
+  background: radial-gradient(circle, rgba(24, 24, 21, 0.075), rgba(255, 90, 54, 0.025) 44%, transparent 72%);
+}
+
+.demo-scene-copy {
+  grid-area: copy;
+  max-width: 460px;
+  justify-self: start;
+  opacity: var(--scene-opacity);
+  transform: translate3d(var(--scene-copy-x), var(--scene-y), 0);
+  transition: opacity 80ms linear, transform 80ms linear;
+  will-change: transform, opacity;
+}
+
+.demo-scroll-scene.is-reverse .demo-scene-copy {
+  justify-self: end;
+}
+
+.demo-scene-number {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 19px;
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.68);
+  color: var(--ink);
+  font-size: 9px;
+  line-height: 1;
+  font-weight: 850;
+  box-shadow: var(--shadow-sm);
+}
+
+.demo-scene-label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--accent-dark);
+  font-size: 10px;
+  line-height: 1.4;
+  font-weight: 800;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+}
+
+.demo-scene-copy h3 {
+  max-width: 430px;
+  margin: 0;
+  font-size: clamp(30px, 3.6vw, 51px);
+  line-height: 1.02;
+  letter-spacing: -.052em;
+  text-wrap: balance;
+}
+
+.demo-scene-copy p {
+  max-width: 430px;
+  margin: 18px 0 0;
+  color: var(--muted-strong);
+  font-size: 14px;
+  line-height: 1.78;
+  text-wrap: pretty;
+}
+
+.demo-scene-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 22px;
+}
+
+.demo-scene-meta span {
+  min-height: 29px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 9px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.58);
+  color: var(--muted-strong);
+  font-size: 9px;
+  line-height: 1;
+  font-weight: 700;
+}
+
+/* Visual side ---------------------------------------------------------------- */
+
+.demo-scene-visual {
+  --demo-card-width: min(430px, 100%);
+  --demo-card-height: 548px;
+  position: relative;
+  grid-area: visual;
+  width: min(520px, 100%);
+  justify-self: end;
+  display: grid;
+  place-items: center;
+  opacity: var(--scene-opacity);
+  transform: translate3d(var(--scene-visual-x), var(--scene-y), 0) scale(var(--scene-scale)) rotate(var(--scene-tilt));
+  transform-origin: center center;
+  transition: opacity 80ms linear, transform 80ms linear;
+  will-change: transform, opacity;
+  perspective: 1200px;
+}
+
+.demo-scroll-scene.is-reverse .demo-scene-visual {
+  justify-self: start;
+}
+
+.demo-scene-visual::before {
+  content: '';
+  position: absolute;
+  z-index: -2;
+  width: 82%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 90, 54, .18), rgba(255, 90, 54, .03) 53%, transparent 72%);
+  opacity: var(--scene-glow);
+  filter: blur(28px);
+  transform: translateY(7%);
+  pointer-events: none;
+}
+
+.demo-scene-stage {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  min-height: 0;
+  display: block;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  overflow: visible;
+}
+
+.demo-scene-stage::before,
+.demo-scene-stage::after,
+.demo-scene-stage > .demo-progress,
+.demo-scene-stage .demo-flow-arrow,
+.demo-scene-stage .demo-step-label {
+  display: none !important;
+}
+
+.demo-scene-stage .demo-step {
+  width: 100%;
+  display: grid;
+  place-items: center;
+}
+
+.demo-scene-stage .demo-browser,
+.demo-scene-stage .demo-processor,
+.demo-scene-stage .demo-instagram-card {
+  width: var(--demo-card-width);
+  max-width: var(--demo-card-width);
+  height: var(--demo-card-height);
+  min-height: var(--demo-card-height);
+  margin: 0 auto;
+}
+
+.demo-scene-stage .demo-browser,
+.demo-scene-stage .demo-processor,
+.demo-scene-stage .demo-instagram-card {
+  box-shadow: 0 34px 74px rgba(24, 24, 21, .16), 0 5px 16px rgba(24, 24, 21, .07);
+}
+
+.demo-scene-shadow {
+  position: absolute;
+  z-index: -1;
+  left: 50%;
+  bottom: -20px;
+  width: 68%;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(24, 24, 21, .19);
+  filter: blur(22px);
+  transform: translateX(-50%) scaleX(.88);
+  opacity: var(--scene-glow);
+}
+
+.demo-scene-orbit {
+  position: absolute;
+  z-index: 0;
+  width: min(470px, 94%);
+  aspect-ratio: 1;
+  border: 1px solid rgba(24, 24, 21, .08);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.demo-scene-orbit::before,
+.demo-scene-orbit::after {
+  content: '';
+  position: absolute;
+  border: 1px solid rgba(24, 24, 21, .06);
+  border-radius: 50%;
+}
+
+.demo-scene-orbit::before { inset: 11%; }
+.demo-scene-orbit::after { inset: 23%; }
+
+.demo-scene-orbit i {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px rgba(255, 90, 54, .09);
+}
+
+.demo-scene-orbit i:nth-child(1) { left: 8%; top: 31%; }
+.demo-scene-orbit i:nth-child(2) { right: 14%; top: 15%; width: 5px; height: 5px; }
+.demo-scene-orbit i:nth-child(3) { right: 9%; bottom: 25%; width: 4px; height: 4px; background: var(--ink); box-shadow: none; }
+
+.demo-scroll-scene.is-active .demo-scene-orbit {
+  animation: demoSceneOrbit 18s linear infinite;
+}
+
+@keyframes demoSceneOrbit {
+  to { transform: rotate(360deg); }
+}
+
+/* Restart each inner story when its scene becomes active --------------------- */
+
+.demo-scroll-scene.is-active .demo-site-track {
+  animation: demoScrollSite 7.6s cubic-bezier(.55, .04, .18, 1) both;
+}
+
+.demo-scroll-scene.is-active .demo-capture-scan {
+  animation: demoScan 3.5s .35s cubic-bezier(.4, 0, .2, 1) both;
+}
+
+.demo-scroll-scene.is-active .demo-processor {
+  animation: demoProcessorIn .55s .12s ease forwards;
+}
+
+.demo-scroll-scene.is-active .demo-input-page {
+  animation: demoInputNarrow 3.2s .5s cubic-bezier(.2, .8, .2, 1) both;
+}
+
+.demo-scroll-scene.is-active .demo-cut-line-1 { animation: demoCutLine .35s 1.18s ease forwards; }
+.demo-scroll-scene.is-active .demo-cut-line-2 { animation: demoCutLine .35s 1.58s ease forwards; }
+.demo-scroll-scene.is-active .demo-cut-line-3 { animation: demoCutLine .35s 1.98s ease forwards; }
+.demo-scroll-scene.is-active .demo-output-card-1 { animation: demoSliceCard .66s 1.5s cubic-bezier(.17, .84, .44, 1) forwards; }
+.demo-scroll-scene.is-active .demo-output-card-2 { animation: demoSliceCard .66s 1.88s cubic-bezier(.17, .84, .44, 1) forwards; }
+.demo-scroll-scene.is-active .demo-output-card-3 { animation: demoSliceCard .66s 2.26s cubic-bezier(.17, .84, .44, 1) forwards; }
+.demo-scroll-scene.is-active .demo-output-card-4 { animation: demoSliceCard .66s 2.64s cubic-bezier(.17, .84, .44, 1) forwards; }
+
+.demo-scroll-scene.is-active .demo-instagram-card {
+  animation: demoPublishIn .62s .16s cubic-bezier(.17, .84, .44, 1) forwards;
+}
+
+.demo-scroll-scene.is-active .demo-ig-carousel {
+  animation: demoCarouselSwipe 10.8s .8s both;
+}
+
+.demo-scroll-scene.is-active .demo-swipe-cue {
+  animation: demoSwipeCue 10.8s .8s both;
+}
+
+/* Arabic mirroring ------------------------------------------------------------ */
+
+html[dir='rtl'] .landing-demo-scroll .demo-story-progress-track i {
+  transform-origin: right center;
+}
+
+html[dir='rtl'] .demo-scroll-scene {
+  grid-template-columns: minmax(380px, 1.12fr) minmax(0, .88fr);
+  grid-template-areas: 'visual copy';
+}
+
+html[dir='rtl'] .demo-scroll-scene.is-reverse {
+  grid-template-columns: minmax(0, .88fr) minmax(380px, 1.12fr);
+  grid-template-areas: 'copy visual';
+}
+
+html[dir='rtl'] .demo-scene-copy {
+  justify-self: end;
+  text-align: right;
+}
+
+html[dir='rtl'] .demo-scroll-scene.is-reverse .demo-scene-copy {
+  justify-self: start;
+}
+
+html[dir='rtl'] .demo-scene-visual {
+  justify-self: start;
+}
+
+html[dir='rtl'] .demo-scroll-scene.is-reverse .demo-scene-visual {
+  justify-self: end;
+}
+
+html[lang='ar'] .demo-scene-label {
+  letter-spacing: 0;
+  text-transform: none;
+  font-weight: 650;
+}
+
+html[lang='ar'] .demo-scene-copy h3 {
+  font-size: clamp(29px, 3.2vw, 45px);
+  line-height: 1.3;
+  letter-spacing: 0;
+  font-weight: 700;
+}
+
+html[lang='ar'] .demo-scene-copy p {
+  line-height: 1.95;
+}
+
+html[dir='rtl'] .demo-scene-meta {
+  direction: rtl;
+}
+
+html[dir='rtl'] .demo-scene-meta span:last-child {
+  unicode-bidi: isolate;
+}
+
+/* Responsive ------------------------------------------------------------------ */
+
+@media (max-width: 1040px) {
+  .demo-scroll-scene,
+  .demo-scroll-scene.is-reverse,
+  html[dir='rtl'] .demo-scroll-scene,
+  html[dir='rtl'] .demo-scroll-scene.is-reverse {
+    grid-template-columns: minmax(0, .9fr) minmax(340px, 1.1fr);
+    gap: 42px;
+  }
+
+  .demo-scroll-scene.is-reverse,
+  html[dir='rtl'] .demo-scroll-scene {
+    grid-template-columns: minmax(340px, 1.1fr) minmax(0, .9fr);
+  }
+
+  .demo-scene-visual {
+    --demo-card-width: min(380px, 100%);
+    --demo-card-height: 500px;
+  }
+
+  .demo-scene-copy h3 {
+    font-size: clamp(28px, 3.4vw, 42px);
+  }
+}
+
+@media (max-width: 860px) {
+  .landing-demo-scroll {
+    margin-top: 58px;
+    padding-top: 40px;
+  }
+
+  .demo-story-progress {
+    top: 8px;
+    min-height: 50px;
+    padding-inline: 8px;
+  }
+
+  .demo-story-progress-point {
+    min-width: 0;
+    gap: 5px;
+    padding-inline: 5px;
+  }
+
+  .demo-story-progress-point small {
+    font-size: 8px;
+  }
+
+  .demo-scroll-scene,
+  .demo-scroll-scene.is-reverse,
+  html[dir='rtl'] .demo-scroll-scene,
+  html[dir='rtl'] .demo-scroll-scene.is-reverse {
+    min-height: auto;
+    grid-template-columns: 1fr;
+    grid-template-areas: 'copy' 'visual';
+    gap: 38px;
+    padding: 74px 0 82px;
+  }
+
+  .demo-scene-copy,
+  .demo-scroll-scene.is-reverse .demo-scene-copy,
+  html[dir='rtl'] .demo-scene-copy,
+  html[dir='rtl'] .demo-scroll-scene.is-reverse .demo-scene-copy {
+    width: min(610px, 100%);
+    max-width: none;
+    justify-self: stretch;
+  }
+
+  .demo-scene-copy h3,
+  .demo-scene-copy p {
+    max-width: 600px;
+  }
+
+  .demo-scene-visual,
+  .demo-scroll-scene.is-reverse .demo-scene-visual,
+  html[dir='rtl'] .demo-scene-visual,
+  html[dir='rtl'] .demo-scroll-scene.is-reverse .demo-scene-visual {
+    --demo-card-width: min(430px, 100%);
+    --demo-card-height: 520px;
+    width: min(520px, 100%);
+    justify-self: center;
+  }
+
+  .demo-scroll-scene::before,
+  .demo-scroll-scene.is-reverse::before {
+    left: 50%;
+    top: 67%;
+  }
+}
+
+@media (max-width: 680px) {
+  .landing-demo-scroll .landing-demo-heading h2 {
+    font-size: 31px;
+  }
+
+  .landing-demo-scroll .landing-demo-heading p {
+    font-size: 13px;
+  }
+
+  .demo-story-progress-point small {
+    display: none;
+  }
+
+  .demo-story-progress-point b {
+    width: 25px;
+    height: 25px;
+  }
+
+  .demo-story-progress-track {
+    left: 16.5%;
+    right: 16.5%;
+  }
+
+  .demo-scroll-scene,
+  .demo-scroll-scene.is-reverse,
+  html[dir='rtl'] .demo-scroll-scene,
+  html[dir='rtl'] .demo-scroll-scene.is-reverse {
+    gap: 30px;
+    padding: 62px 0 72px;
+  }
+
+  .demo-scene-number {
+    width: 32px;
+    height: 32px;
+    margin-bottom: 15px;
+  }
+
+  .demo-scene-copy h3,
+  html[lang='ar'] .demo-scene-copy h3 {
+    font-size: 30px;
+  }
+
+  .demo-scene-copy p {
+    margin-top: 14px;
+    font-size: 13px;
+  }
+
+  .demo-scene-meta {
+    margin-top: 17px;
+  }
+
+  .demo-scene-visual,
+  .demo-scroll-scene.is-reverse .demo-scene-visual,
+  html[dir='rtl'] .demo-scene-visual,
+  html[dir='rtl'] .demo-scroll-scene.is-reverse .demo-scene-visual {
+    --demo-card-width: min(100%, 390px);
+    --demo-card-height: 470px;
+  }
+
+  .demo-scene-orbit {
+    width: min(410px, 105%);
+  }
+}
+
+@media (max-width: 430px) {
+  .landing-demo-scroll {
+    margin-top: 48px;
+    padding-top: 34px;
+  }
+
+  .demo-story-progress {
+    min-height: 46px;
+    border-radius: 13px;
+  }
+
+  .demo-scroll-scene,
+  .demo-scroll-scene.is-reverse,
+  html[dir='rtl'] .demo-scroll-scene,
+  html[dir='rtl'] .demo-scroll-scene.is-reverse {
+    padding: 54px 0 64px;
+  }
+
+  .demo-scene-copy h3,
+  html[lang='ar'] .demo-scene-copy h3 {
+    font-size: 27px;
+  }
+
+  .demo-scene-visual,
+  .demo-scroll-scene.is-reverse .demo-scene-visual,
+  html[dir='rtl'] .demo-scene-visual,
+  html[dir='rtl'] .demo-scroll-scene.is-reverse .demo-scene-visual {
+    --demo-card-height: 420px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .demo-scroll-scene,
+  .demo-scene-copy,
+  .demo-scene-visual {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .demo-story-progress-track i {
+    transition: none;
+  }
+
+  .demo-scroll-scene.is-active .demo-scene-orbit {
+    animation: none;
+  }
+}
