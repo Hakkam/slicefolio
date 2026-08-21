@@ -1,5 +1,6 @@
 export type OutputMode = 'mixed' | 'portrait' | 'square' | 'landscape';
 export type ExportFormat = 'png' | 'jpeg';
+export type SliceRotation = 0 | -90;
 
 export interface SourceSegment {
   source: CanvasImageSource;
@@ -25,6 +26,7 @@ export interface SlicePlan {
   height: number;
   sourceStart: number;
   sourceEnd: number;
+  rotation: SliceRotation;
 }
 
 export interface SliceAsset extends SlicePlan {
