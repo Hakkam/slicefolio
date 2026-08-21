@@ -20,6 +20,15 @@ const DEFAULT_OPTIONS: SliceOptions = {
   background: '#F4F1EA',
   format: 'png',
   jpegQuality: 0.92,
+  padding: {
+    enabled: false,
+    scope: 'all',
+    linked: true,
+    top: 48,
+    right: 48,
+    bottom: 48,
+    left: 48,
+  },
 };
 
 function getErrorMessage(error: unknown) {
@@ -46,6 +55,7 @@ export default function App() {
   const [options, setOptions] = useState<SliceOptions>(DEFAULT_OPTIONS);
   const [slices, setSlices] = useState<SliceAsset[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [selectedSlideIndices, setSelectedSlideIndices] = useState<number[]>([]);
   const [processingSource, setProcessingSource] = useState(false);
   const [sourceProgress, setSourceProgress] = useState(0);
   const [sourceProgressLabel, setSourceProgressLabel] = useState('');
@@ -61,10 +71,22 @@ export default function App() {
     [source, options.mode],
   );
 
+  const selectedPaddingKey = useMemo(() => {
+    if (!options.padding.enabled || options.padding.scope !== 'selected') return '';
+    return selectedSlideIndices.join(',');
+  }, [options.padding.enabled, options.padding.scope, selectedSlideIndices]);
+
   const clearGeneratedSlices = () => {
     setSlices((current) => {
       revokeSlices(current);
       return [];
+    });
+  };
+
+  const toggleSlideSelection = (index: number) => {
+    setSelectedSlideIndices((current) => {
+      if (current.includes(index)) return current.filter((item) => item !== index);
+      return [...current, index].sort((a, b) => a - b);
     });
   };
 
@@ -76,6 +98,7 @@ export default function App() {
     clearGeneratedSlices();
     setSource(null);
     setActiveIndex(0);
+    setSelectedSlideIndices([]);
 
     try {
       const nextSource = await loadSource(file, (progress, label) => {
@@ -93,6 +116,13 @@ export default function App() {
   };
 
   useEffect(() => {
+    setSelectedSlideIndices((current) => {
+      const next = current.filter((index) => index < estimatedCount);
+      return next.length === current.length ? current : next;
+    });
+  }, [estimatedCount]);
+
+  useEffect(() => {
     if (!source) return undefined;
 
     let cancelled = false;
@@ -106,6 +136,7 @@ export default function App() {
         const nextSlices = await generateSlices(
           source,
           options,
+          selectedSlideIndices,
           (progress, label) => {
             if (!cancelled) {
               setGenerationProgress(progress);
@@ -124,7 +155,7 @@ export default function App() {
           revokeSlices(current);
           return nextSlices;
         });
-        setActiveIndex(0);
+        setActiveIndex((current) => Math.min(current, Math.max(0, nextSlices.length - 1)));
         setGenerationProgress(1);
         setGenerationLabel('Ready');
       } catch (nextError) {
@@ -138,7 +169,7 @@ export default function App() {
       cancelled = true;
       window.clearTimeout(timer);
     };
-  }, [source, options]);
+  }, [source, options, selectedPaddingKey]);
 
   useEffect(() => {
     return () => {
@@ -158,6 +189,7 @@ export default function App() {
     setError(null);
     setOptions(DEFAULT_OPTIONS);
     setActiveIndex(0);
+    setSelectedSlideIndices([]);
     setGenerationProgress(0);
     setSourceProgress(0);
   };
@@ -190,16 +222,33 @@ export default function App() {
         </header>
 
         <main className="landing-main">
-          <section className="hero-copy">
+          <section className="hero-copy landing-animated-hero">
+            <div className="hero-motion-field" aria-hidden="true">
+              <span className="motion-tile motion-tile-a">4:5</span>
+              <span className="motion-tile motion-tile-b">90°</span>
+              <span className="motion-tile motion-tile-c">1:1</span>
+              <span className="motion-cross motion-cross-a">+</span>
+              <span className="motion-cross motion-cross-b">+</span>
+            </div>
             <span className="product-kicker">
               <Sparkles size={15} />
               Built for full-page design exports
             </span>
-            <h1>Turn full-page designs into Instagram-ready slices.</h1>
+            <h1>
+              <span className="hero-line">Turn full-page designs</span>
+              <span className="hero-line hero-line-accent">into Instagram-ready slices.</span>
+            </h1>
             <p>
               Upload a website PDF or long image. Slicefolio divides it into a clean carousel sequence without cropping, skipping, or uploading your work.
             </p>
           </section>
+
+          <div className="motion-marquee" aria-hidden="true">
+            <div>
+              <span>SLICE</span><i>•</i><span>ROTATE</span><i>•</i><span>FRAME</span><i>•</i><span>EXPORT</span><i>•</i>
+              <span>SLICE</span><i>•</i><span>ROTATE</span><i>•</i><span>FRAME</span><i>•</i><span>EXPORT</span><i>•</i>
+            </div>
+          </div>
 
           <Dropzone onFile={handleFile} disabled={processingSource} />
 
@@ -224,7 +273,7 @@ export default function App() {
             </div>
           ) : null}
 
-          <section className="workflow-strip" aria-label="Slicefolio workflow">
+          <section className="workflow-strip animated-workflow" aria-label="Slicefolio workflow">
             <div><span>01</span><strong>Upload</strong><p>PDF or long image</p></div>
             <div><span>02</span><strong>Slice</strong><p>Blind, sequential, lossless</p></div>
             <div><span>03</span><strong>Preview</strong><p>Review the full sequence</p></div>
@@ -233,7 +282,10 @@ export default function App() {
         </main>
 
         <footer className="landing-footer">
-          <span>Slicefolio</span>
+          <div className="footer-brand-credit">
+            <span>Slicefolio</span>
+            <a href="https://hakkam.com" target="_blank" rel="noreferrer">Developed by Hakkam ↗</a>
+          </div>
           <span>No account. No upload. No server processing.</span>
         </footer>
       </div>
@@ -297,7 +349,9 @@ export default function App() {
           source={source}
           options={options}
           estimatedCount={estimatedCount}
+          selectedCount={selectedSlideIndices.length}
           onOptionsChange={setOptions}
+          onClearSelected={() => setSelectedSlideIndices([])}
         />
 
         <Preview
@@ -306,7 +360,9 @@ export default function App() {
           generating={generating}
           progress={generationProgress}
           progressLabel={generationLabel}
+          selectedSlideIndices={selectedSlideIndices}
           onActiveIndexChange={setActiveIndex}
+          onToggleSlideSelection={toggleSlideSelection}
           onDownload={downloadSlice}
         />
       </div>
