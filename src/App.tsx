@@ -11,9 +11,16 @@ import {
 import { ControlsPanel } from './components/ControlsPanel';
 import { Dropzone } from './components/Dropzone';
 import { Preview } from './components/Preview';
-import { downloadAllSlices, downloadSlice } from './lib/export';
-import { generateSlices, loadSource, planSlices, revokeSlices } from './lib/media';
 import type { SliceAsset, SliceOptions, SourceDocument } from './types';
+
+type MediaModule = typeof import('./lib/media');
+
+let mediaModulePromise: Promise<MediaModule> | null = null;
+
+function getMediaModule() {
+  if (!mediaModulePromise) mediaModulePromise = import('./lib/media');
+  return mediaModulePromise;
+}
 
 const DEFAULT_OPTIONS: SliceOptions = {
   mode: 'portrait',
@@ -51,6 +58,7 @@ function Brand() {
 
 export default function App() {
   const replaceInputRef = useRef<HTMLInputElement>(null);
+  const [mediaModule, setMediaModule] = useState<MediaModule | null>(null);
   const [source, setSource] = useState<SourceDocument | null>(null);
   const [options, setOptions] = useState<SliceOptions>(DEFAULT_OPTIONS);
   const [slices, setSlices] = useState<SliceAsset[]>([]);
@@ -67,8 +75,8 @@ export default function App() {
   const [error, setError] = useState<string | null>(null);
 
   const estimatedCount = useMemo(
-    () => (source ? planSlices(source, options.mode).length : 0),
-    [source, options.mode],
+    () => (source && mediaModule ? mediaModule.planSlices(source, options.mode).length : 0),
+    [source, mediaModule, options.mode],
   );
 
   const selectedPaddingKey = useMemo(() => {
@@ -78,7 +86,7 @@ export default function App() {
 
   const clearGeneratedSlices = () => {
     setSlices((current) => {
-      revokeSlices(current);
+      mediaModule?.revokeSlices(current);
       return [];
     });
   };
@@ -101,7 +109,9 @@ export default function App() {
     setSelectedSlideIndices([]);
 
     try {
-      const nextSource = await loadSource(file, (progress, label) => {
+      const media = await getMediaModule();
+      setMediaModule(media);
+      const nextSource = await media.loadSource(file, (progress, label) => {
         setSourceProgress(progress);
         setSourceProgressLabel(label);
       });
@@ -123,7 +133,7 @@ export default function App() {
   }, [estimatedCount]);
 
   useEffect(() => {
-    if (!source) return undefined;
+    if (!source || !mediaModule) return undefined;
 
     let cancelled = false;
     const timer = window.setTimeout(async () => {
@@ -133,7 +143,7 @@ export default function App() {
       setError(null);
 
       try {
-        const nextSlices = await generateSlices(
+        const nextSlices = await mediaModule.generateSlices(
           source,
           options,
           selectedSlideIndices,
@@ -147,12 +157,12 @@ export default function App() {
         );
 
         if (cancelled) {
-          revokeSlices(nextSlices);
+          mediaModule.revokeSlices(nextSlices);
           return;
         }
 
         setSlices((current) => {
-          revokeSlices(current);
+          mediaModule.revokeSlices(current);
           return nextSlices;
         });
         setActiveIndex((current) => Math.min(current, Math.max(0, nextSlices.length - 1)));
@@ -169,13 +179,13 @@ export default function App() {
       cancelled = true;
       window.clearTimeout(timer);
     };
-  }, [source, options, selectedPaddingKey]);
+  }, [source, options, selectedPaddingKey, mediaModule, selectedSlideIndices]);
 
   useEffect(() => {
     return () => {
-      revokeSlices(slices);
+      mediaModule?.revokeSlices(slices);
     };
-  }, [slices]);
+  }, [slices, mediaModule]);
 
   useEffect(() => {
     if (activeIndex > slices.length - 1) {
@@ -202,11 +212,21 @@ export default function App() {
     setError(null);
 
     try {
+      const { downloadAllSlices } = await import('./lib/export');
       await downloadAllSlices(slices, (progress) => setZipProgress(progress));
     } catch (nextError) {
       setError(getErrorMessage(nextError));
     } finally {
       setExportingZip(false);
+    }
+  };
+
+  const handleDownloadSlice = async (slice: SliceAsset) => {
+    try {
+      const { downloadSlice } = await import('./lib/export');
+      downloadSlice(slice);
+    } catch (nextError) {
+      setError(getErrorMessage(nextError));
     }
   };
 
@@ -217,19 +237,19 @@ export default function App() {
           <Brand />
           <div className="topbar-note">
             <LockKeyhole size={15} />
-            100% local processing
+            Local browser processing
           </div>
         </header>
 
         <main className="landing-main">
-          <section className="hero-copy">
+          <section className="hero-copy" aria-labelledby="slicefolio-title">
             <span className="product-kicker">
               <Sparkles size={15} />
-              Built for full-page design exports
+              Built for UI/UX and web designers
             </span>
-            <h1>Turn full-page designs into Instagram-ready slices.</h1>
+            <h1 id="slicefolio-title">Turn website designs and PDFs into Instagram carousel slides.</h1>
             <p>
-              Upload a website PDF or long image. Slicefolio divides it into a clean carousel sequence without cropping, skipping, or uploading your work.
+              Slicefolio is a browser-based tool for UI/UX and web designers that converts full-page website designs, PDFs, and long images into Instagram-ready carousel slides. Your files stay in your browser and are never uploaded to Slicefolio.
             </p>
           </section>
 
@@ -256,20 +276,82 @@ export default function App() {
             </div>
           ) : null}
 
-          <section className="workflow-strip" aria-label="Slicefolio workflow">
-            <div><span>01</span><strong>Upload</strong><p>PDF or long image</p></div>
-            <div><span>02</span><strong>Slice</strong><p>Blind, sequential, lossless</p></div>
+          <section className="workflow-strip" aria-labelledby="workflow-title">
+            <h2 id="workflow-title" className="visually-hidden">How Slicefolio works</h2>
+            <div><span>01</span><strong>Upload</strong><p>PDF, PNG, JPG, or WebP</p></div>
+            <div><span>02</span><strong>Slice</strong><p>Complete, sequential body</p></div>
             <div><span>03</span><strong>Preview</strong><p>Review the full sequence</p></div>
             <div><span>04</span><strong>Export</strong><p>PNG, JPEG, or ZIP</p></div>
+          </section>
+
+          <section className="product-facts" aria-labelledby="product-facts-title">
+            <div className="landing-section-intro">
+              <span className="section-eyebrow">Product facts</span>
+              <h2 id="product-facts-title">Present web design on Instagram without rebuilding it.</h2>
+              <p>
+                Slicefolio keeps the workflow focused: upload a complete design, create a sequential carousel, review the slides, and export the result.
+              </p>
+            </div>
+            <div className="fact-grid">
+              <article className="fact-item">
+                <h3>Made for design presentations</h3>
+                <p>Use full-page website designs, long website screenshots, portfolio presentations, or webpage exports from UI/UX and web design work.</p>
+              </article>
+              <article className="fact-item">
+                <h3>Instagram-ready output sizes</h3>
+                <p>Export Portrait 4:5 at 1080 × 1350, Tall 3:4 at 1080 × 1440, or Square 1:1 at 1080 × 1080.</p>
+              </article>
+              <article className="fact-item">
+                <h3>Local browser processing</h3>
+                <p>PDF rendering, image decoding, slicing, previews, image encoding, and ZIP packaging happen in your browser. Nothing is uploaded to Slicefolio.</p>
+              </article>
+            </div>
+          </section>
+
+          <section className="faq-section" aria-labelledby="faq-title">
+            <div className="landing-section-intro">
+              <span className="section-eyebrow">Common questions</span>
+              <h2 id="faq-title">Slicefolio questions, answered directly.</h2>
+            </div>
+            <div className="faq-list">
+              <details>
+                <summary>What is Slicefolio?</summary>
+                <p>Slicefolio is a browser-based tool that converts full-page website designs, PDFs, and long images into Instagram-ready carousel slides for UI/UX designers, web designers, agencies, and creative professionals.</p>
+              </details>
+              <details>
+                <summary>Can I convert a PDF into Instagram carousel slides?</summary>
+                <p>Yes. Slicefolio accepts PDF files as well as PNG, JPG, and WebP images. The current file-size limit is 250 MB.</p>
+              </details>
+              <details>
+                <summary>What Instagram carousel sizes does Slicefolio support?</summary>
+                <p>Slicefolio supports Portrait 4:5 at 1080 × 1350, Tall 3:4 at 1080 × 1440, and Square 1:1 at 1080 × 1080.</p>
+              </details>
+              <details>
+                <summary>Does Slicefolio upload my design files?</summary>
+                <p>No. Your selected files stay in your browser. Slicefolio processes the source locally instead of uploading it to a Slicefolio server.</p>
+              </details>
+              <details>
+                <summary>Can I add padding to generated slides?</summary>
+                <p>Yes. Padding can apply to every slide or only selected slides, with independent controls for the top, right, bottom, and left sides.</p>
+              </details>
+              <details>
+                <summary>Can I export all slides at once?</summary>
+                <p>Yes. You can download slides individually as PNG or JPEG files, or package the complete ordered sequence into a ZIP.</p>
+              </details>
+              <details>
+                <summary>Does Slicefolio use AI to detect sections?</summary>
+                <p>No. The current slicing model is sequential and deterministic. Slicefolio does not currently use semantic or AI section detection to choose cut points.</p>
+              </details>
+            </div>
           </section>
         </main>
 
         <footer className="landing-footer">
           <div className="footer-brand-credit">
             <span>Slicefolio</span>
-            <a href="https://hakkam.com" target="_blank" rel="noreferrer">Developed by Hakkam ↗</a>
+            <a href="https://hakkam.com" target="_blank" rel="noopener noreferrer">Developed by Hakkam ↗</a>
           </div>
-          <span>No account. No upload. No server processing.</span>
+          <span>No account required. Files stay in your browser.</span>
         </footer>
       </div>
     );
@@ -309,6 +391,7 @@ export default function App() {
           ref={replaceInputRef}
           className="visually-hidden"
           type="file"
+          tabIndex={-1}
           accept="application/pdf,image/png,image/jpeg,image/webp,.pdf,.png,.jpg,.jpeg,.webp"
           onChange={(event) => {
             const file = event.target.files?.[0];
@@ -346,7 +429,7 @@ export default function App() {
           selectedSlideIndices={selectedSlideIndices}
           onActiveIndexChange={setActiveIndex}
           onToggleSlideSelection={toggleSlideSelection}
-          onDownload={downloadSlice}
+          onDownload={(slice) => void handleDownloadSlice(slice)}
         />
       </div>
 
