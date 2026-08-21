@@ -21,7 +21,7 @@ Slicefolio is a browser-native tool for turning full-page website designs into I
 - Padding can be linked across all sides or controlled independently for top, right, bottom, and left.
 - Export PNG or JPEG.
 - Download one slide or package the full ordered sequence as a ZIP.
-- The landing page currently uses the original restrained visual direction; experimental redesign work is intentionally deferred.
+- The landing page currently uses the original restrained visual direction; experimental visual redesign work is intentionally deferred.
 - The landing footer includes a development credit linking to hakkam.com.
 
 ## Stack
