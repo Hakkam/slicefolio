@@ -4,17 +4,17 @@ html[dir='rtl'] .demo-stage {
   direction: rtl;
 }
 
-/* The desktop story reads physically from right to left:
-   Capture -> Slice -> Publish. Explicit placement keeps the visual order
-   independent from browser grid auto-placement rules. */
+/* CSS Grid line numbering follows the RTL inline direction here, so column 1
+   is physically the rightmost column. Keep the Arabic story explicitly:
+   Capture (right) -> Slice (center) -> Publish (left). */
 @media (min-width: 861px) {
   html[dir='rtl'] .demo-capture-step {
-    grid-column: 5;
+    grid-column: 1;
     grid-row: 1;
   }
 
   html[dir='rtl'] .demo-flow-arrow-a {
-    grid-column: 4;
+    grid-column: 2;
     grid-row: 1;
   }
 
@@ -24,12 +24,12 @@ html[dir='rtl'] .demo-stage {
   }
 
   html[dir='rtl'] .demo-flow-arrow-b {
-    grid-column: 2;
+    grid-column: 4;
     grid-row: 1;
   }
 
   html[dir='rtl'] .demo-publish-step {
-    grid-column: 1;
+    grid-column: 5;
     grid-row: 1;
   }
 
