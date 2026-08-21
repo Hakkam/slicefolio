@@ -1,4 +1,10 @@
-import { ArrowLeft, ArrowRight, Download, Image as ImageIcon } from 'lucide-react';
+import {
+  ArrowLeft,
+  ArrowRight,
+  Check,
+  Download,
+  Image as ImageIcon,
+} from 'lucide-react';
 import type { SliceAsset } from '../types';
 
 interface PreviewProps {
@@ -7,7 +13,9 @@ interface PreviewProps {
   generating: boolean;
   progress: number;
   progressLabel: string;
+  selectedSlideIndices: number[];
   onActiveIndexChange: (index: number) => void;
+  onToggleSlideSelection: (index: number) => void;
   onDownload: (slice: SliceAsset) => void;
 }
 
@@ -17,7 +25,9 @@ export function Preview({
   generating,
   progress,
   progressLabel,
+  selectedSlideIndices,
   onActiveIndexChange,
+  onToggleSlideSelection,
   onDownload,
 }: PreviewProps) {
   const activeSlice = slices[activeIndex];
@@ -37,6 +47,7 @@ export function Preview({
             <span>{activeSlice.width} × {activeSlice.height}</span>
             <span>{activeSlice.role === 'cover' ? 'Hero cover' : 'Body'}</span>
             {activeSlice.rotation !== 0 ? <span>Rotated 90°</span> : null}
+            {selectedSlideIndices.includes(activeIndex) ? <span>Selected</span> : null}
           </div>
         ) : null}
       </div>
@@ -78,6 +89,16 @@ export function Preview({
 
               <button
                 type="button"
+                className={`secondary-button small-button select-active-button${selectedSlideIndices.includes(activeIndex) ? ' is-selected' : ''}`}
+                onClick={() => onToggleSlideSelection(activeIndex)}
+                aria-pressed={selectedSlideIndices.includes(activeIndex)}
+              >
+                <Check size={16} />
+                {selectedSlideIndices.includes(activeIndex) ? 'Selected' : 'Select slide'}
+              </button>
+
+              <button
+                type="button"
                 className="secondary-button small-button"
                 onClick={() => onDownload(activeSlice)}
               >
@@ -110,33 +131,49 @@ export function Preview({
       <section className="thumbnail-section" aria-label="Generated slides">
         <div className="thumbnail-heading">
           <span>Generated slides</span>
-          <span>{slices.length} assets</span>
+          <span>{slices.length} assets · {selectedSlideIndices.length} selected</span>
         </div>
         <div className="thumbnail-strip">
-          {slices.map((slice, index) => (
-            <button
-              type="button"
-              key={slice.id}
-              className={`thumbnail-card${index === activeIndex ? ' is-active' : ''}`}
-              onClick={() => onActiveIndexChange(index)}
-              aria-label={`Show slide ${index + 1}`}
-            >
-              <span
-                className="thumbnail-image"
-                style={{ aspectRatio: `${slice.width} / ${slice.height}` }}
+          {slices.map((slice, index) => {
+            const selected = selectedSlideIndices.includes(index);
+            return (
+              <div
+                key={slice.id}
+                className={`thumbnail-card-shell${index === activeIndex ? ' is-active' : ''}${selected ? ' is-selected' : ''}`}
               >
-                <img src={slice.url} alt="" draggable={false} />
-              </span>
-              <span className="thumbnail-meta">
-                <strong>{String(index + 1).padStart(2, '0')}</strong>
-                <span>
-                  {slice.role === 'cover'
-                    ? 'Hero cover'
-                    : `${slice.rotation !== 0 ? '90° · ' : ''}${slice.width} × ${slice.height}`}
-                </span>
-              </span>
-            </button>
-          ))}
+                <button
+                  type="button"
+                  className="thumbnail-card"
+                  onClick={() => onActiveIndexChange(index)}
+                  aria-label={`Show slide ${index + 1}`}
+                >
+                  <span
+                    className="thumbnail-image"
+                    style={{ aspectRatio: `${slice.width} / ${slice.height}` }}
+                  >
+                    <img src={slice.url} alt="" draggable={false} />
+                  </span>
+                  <span className="thumbnail-meta">
+                    <strong>{String(index + 1).padStart(2, '0')}</strong>
+                    <span>
+                      {slice.role === 'cover'
+                        ? 'Hero cover'
+                        : `${slice.rotation !== 0 ? '90° · ' : ''}${slice.width} × ${slice.height}`}
+                    </span>
+                  </span>
+                </button>
+                <button
+                  type="button"
+                  className={`thumbnail-select${selected ? ' is-selected' : ''}`}
+                  aria-pressed={selected}
+                  aria-label={`${selected ? 'Deselect' : 'Select'} slide ${index + 1} for targeted padding`}
+                  onClick={() => onToggleSlideSelection(index)}
+                >
+                  <Check size={13} strokeWidth={2.8} />
+                </button>
+              </div>
+            );
+          })}
         </div>
       </section>
     </main>
