@@ -5,6 +5,7 @@ import {
   Download,
   Image as ImageIcon,
 } from 'lucide-react';
+import { pick, type Locale } from '../i18n';
 import type { SliceAsset } from '../types';
 
 interface PreviewProps {
@@ -17,6 +18,7 @@ interface PreviewProps {
   onActiveIndexChange: (index: number) => void;
   onToggleSlideSelection: (index: number) => void;
   onDownload: (slice: SliceAsset) => void;
+  locale?: Locale;
 }
 
 export function Preview({
@@ -29,25 +31,27 @@ export function Preview({
   onActiveIndexChange,
   onToggleSlideSelection,
   onDownload,
+  locale = 'en',
 }: PreviewProps) {
   const activeSlice = slices[activeIndex];
   const canGoPrevious = activeIndex > 0;
   const canGoNext = activeIndex < slices.length - 1;
+  const isSelected = selectedSlideIndices.includes(activeIndex);
 
   return (
     <main className="preview-panel">
       <div className="preview-toolbar">
         <div>
-          <span className="section-eyebrow">Preview</span>
-          <h1>Carousel sequence</h1>
+          <span className="section-eyebrow">{pick(locale, 'Preview', 'المعاينة')}</span>
+          <h1>{pick(locale, 'Carousel sequence', 'تسلسل الكاروسيل')}</h1>
         </div>
         {activeSlice ? (
           <div className="active-meta">
-            <span>Slide {activeIndex + 1} of {slices.length}</span>
+            <span>{pick(locale, `Slide ${activeIndex + 1} of ${slices.length}`, `الشريحة ${activeIndex + 1} من ${slices.length}`)}</span>
             <span>{activeSlice.width} × {activeSlice.height}</span>
-            <span>{activeSlice.role === 'cover' ? 'Hero cover' : 'Body'}</span>
-            {activeSlice.rotation !== 0 ? <span>Rotated 90°</span> : null}
-            {selectedSlideIndices.includes(activeIndex) ? <span>Selected</span> : null}
+            <span>{activeSlice.role === 'cover' ? pick(locale, 'Hero cover', 'غلاف Hero') : pick(locale, 'Body', 'المحتوى')}</span>
+            {activeSlice.rotation !== 0 ? <span>{pick(locale, 'Rotated 90°', 'مدوّرة 90°')}</span> : null}
+            {isSelected ? <span>{pick(locale, 'Selected', 'محددة')}</span> : null}
           </div>
         ) : null}
       </div>
@@ -59,7 +63,11 @@ export function Preview({
               className={`slide-preview-frame ${activeSlice.role}`}
               style={{ aspectRatio: `${activeSlice.width} / ${activeSlice.height}` }}
             >
-              <img src={activeSlice.url} alt={`Generated slide ${activeIndex + 1}`} draggable={false} />
+              <img
+                src={activeSlice.url}
+                alt={pick(locale, `Generated slide ${activeIndex + 1}`, `الشريحة الناتجة ${activeIndex + 1}`)}
+                draggable={false}
+              />
             </div>
 
             <div className="preview-actions">
@@ -68,7 +76,7 @@ export function Preview({
                 className="icon-button"
                 onClick={() => onActiveIndexChange(activeIndex - 1)}
                 disabled={!canGoPrevious}
-                aria-label="Previous slide"
+                aria-label={pick(locale, 'Previous slide', 'الشريحة السابقة')}
               >
                 <ArrowLeft size={18} />
               </button>
@@ -80,7 +88,7 @@ export function Preview({
                 className="icon-button"
                 onClick={() => onActiveIndexChange(activeIndex + 1)}
                 disabled={!canGoNext}
-                aria-label="Next slide"
+                aria-label={pick(locale, 'Next slide', 'الشريحة التالية')}
               >
                 <ArrowRight size={18} />
               </button>
@@ -89,12 +97,12 @@ export function Preview({
 
               <button
                 type="button"
-                className={`secondary-button small-button select-active-button${selectedSlideIndices.includes(activeIndex) ? ' is-selected' : ''}`}
+                className={`secondary-button small-button select-active-button${isSelected ? ' is-selected' : ''}`}
                 onClick={() => onToggleSlideSelection(activeIndex)}
-                aria-pressed={selectedSlideIndices.includes(activeIndex)}
+                aria-pressed={isSelected}
               >
                 <Check size={16} />
-                {selectedSlideIndices.includes(activeIndex) ? 'Selected' : 'Select slide'}
+                {isSelected ? pick(locale, 'Selected', 'محددة') : pick(locale, 'Select slide', 'تحديد الشريحة')}
               </button>
 
               <button
@@ -103,22 +111,22 @@ export function Preview({
                 onClick={() => onDownload(activeSlice)}
               >
                 <Download size={16} />
-                Download slide
+                {pick(locale, 'Download slide', 'تنزيل الشريحة')}
               </button>
             </div>
           </>
         ) : (
           <div className="empty-preview">
             <span><ImageIcon size={24} /></span>
-            <strong>Preparing your carousel</strong>
-            <p>Slides will appear here as soon as the browser finishes rendering the file.</p>
+            <strong>{pick(locale, 'Preparing your carousel', 'جاري تجهيز الكاروسيل')}</strong>
+            <p>{pick(locale, 'Slides will appear here as soon as the browser finishes rendering the file.', 'ستظهر الشرائح هنا فور انتهاء المتصفح من معالجة الملف.')}</p>
           </div>
         )}
 
         {generating ? (
           <div className="generation-status">
             <div className="generation-status-copy">
-              <span>{progressLabel || 'Generating slides'}</span>
+              <span>{progressLabel || pick(locale, 'Generating slides', 'إنشاء الشرائح')}</span>
               <strong>{Math.round(progress * 100)}%</strong>
             </div>
             <div className="progress-track" aria-hidden="true">
@@ -128,10 +136,10 @@ export function Preview({
         ) : null}
       </section>
 
-      <section className="thumbnail-section" aria-label="Generated slides">
+      <section className="thumbnail-section" aria-label={pick(locale, 'Generated slides', 'الشرائح الناتجة')}>
         <div className="thumbnail-heading">
-          <span>Generated slides</span>
-          <span>{slices.length} assets · {selectedSlideIndices.length} selected</span>
+          <span>{pick(locale, 'Generated slides', 'الشرائح الناتجة')}</span>
+          <span>{pick(locale, `${slices.length} assets · ${selectedSlideIndices.length} selected`, `${slices.length} شرائح · ${selectedSlideIndices.length} محددة`)}</span>
         </div>
         <div className="thumbnail-strip">
           {slices.map((slice, index) => {
@@ -145,7 +153,7 @@ export function Preview({
                   type="button"
                   className="thumbnail-card"
                   onClick={() => onActiveIndexChange(index)}
-                  aria-label={`Show slide ${index + 1}`}
+                  aria-label={pick(locale, `Show slide ${index + 1}`, `عرض الشريحة ${index + 1}`)}
                 >
                   <span
                     className="thumbnail-image"
@@ -157,7 +165,7 @@ export function Preview({
                     <strong>{String(index + 1).padStart(2, '0')}</strong>
                     <span>
                       {slice.role === 'cover'
-                        ? 'Hero cover'
+                        ? pick(locale, 'Hero cover', 'غلاف Hero')
                         : `${slice.rotation !== 0 ? '90° · ' : ''}${slice.width} × ${slice.height}`}
                     </span>
                   </span>
@@ -166,7 +174,11 @@ export function Preview({
                   type="button"
                   className={`thumbnail-select${selected ? ' is-selected' : ''}`}
                   aria-pressed={selected}
-                  aria-label={`${selected ? 'Deselect' : 'Select'} slide ${index + 1} for targeted padding`}
+                  aria-label={pick(
+                    locale,
+                    `${selected ? 'Deselect' : 'Select'} slide ${index + 1} for targeted padding`,
+                    `${selected ? 'إلغاء تحديد' : 'تحديد'} الشريحة ${index + 1} لتطبيق الهوامش عليها`,
+                  )}
                   onClick={() => onToggleSlideSelection(index)}
                 >
                   <Check size={13} strokeWidth={2.8} />
