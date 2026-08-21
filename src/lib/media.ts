@@ -20,8 +20,8 @@ const MAX_FILE_SIZE = 250 * 1024 * 1024;
 
 const FRAME_PRESETS = {
   portrait: { width: 1080, height: 1350 },
+  tall: { width: 1080, height: 1440 },
   square: { width: 1080, height: 1080 },
-  landscape: { width: 1080, height: 566 },
 } as const;
 
 function assertSupportedFile(file: File) {
@@ -186,23 +186,26 @@ function sourceCapacityForFrame(
   return frame.height / outputScale;
 }
 
-function planMixedSlices(source: SourceDocument): SlicePlan[] {
+export function planSlices(source: SourceDocument, mode: OutputMode): SlicePlan[] {
+  const frame = FRAME_PRESETS[mode];
   const plans: SlicePlan[] = [];
-  const coverFrame = FRAME_PRESETS.portrait;
-  const coverCapacity = sourceCapacityForFrame(source, coverFrame, false);
 
+  // Slide 01 is a standalone hero cover. It intentionally duplicates the top
+  // of the source and does not consume any of the body sequence.
+  const coverCapacity = sourceCapacityForFrame(source, frame, false);
   plans.push({
     index: 0,
     role: 'cover',
-    width: coverFrame.width,
-    height: coverFrame.height,
+    width: frame.width,
+    height: frame.height,
     sourceStart: 0,
     sourceEnd: Math.min(source.totalHeight, coverCapacity),
     rotation: 0,
   });
 
-  const bodyFrame = FRAME_PRESETS.landscape;
-  const bodyCapacity = sourceCapacityForFrame(source, bodyFrame, true);
+  // Slide 02 restarts at source position 0. The entire body then advances
+  // sequentially from top to bottom while each slice is rotated 90°.
+  const bodyCapacity = sourceCapacityForFrame(source, frame, true);
   const epsilon = 0.0001;
   let cursor = 0;
   let index = 1;
@@ -213,43 +216,11 @@ function planMixedSlices(source: SourceDocument): SlicePlan[] {
     plans.push({
       index,
       role: 'body',
-      width: bodyFrame.width,
-      height: bodyFrame.height,
-      sourceStart: cursor,
-      sourceEnd,
-      rotation: -90,
-    });
-
-    cursor = sourceEnd;
-    index += 1;
-  }
-
-  return plans;
-}
-
-export function planSlices(source: SourceDocument, mode: OutputMode): SlicePlan[] {
-  if (mode === 'mixed') {
-    return planMixedSlices(source);
-  }
-
-  const frame = FRAME_PRESETS[mode];
-  const sourceCapacity = sourceCapacityForFrame(source, frame, false);
-  const plans: SlicePlan[] = [];
-  const epsilon = 0.0001;
-  let cursor = 0;
-  let index = 0;
-
-  while (cursor < source.totalHeight - epsilon) {
-    const sourceEnd = Math.min(source.totalHeight, cursor + sourceCapacity);
-
-    plans.push({
-      index,
-      role: index === 0 ? 'cover' : 'body',
       width: frame.width,
       height: frame.height,
       sourceStart: cursor,
       sourceEnd,
-      rotation: 0,
+      rotation: -90,
     });
 
     cursor = sourceEnd;
