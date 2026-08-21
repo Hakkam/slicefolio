@@ -326,8 +326,8 @@ export function ControlsPanel({
         ) : null}
       </section>
 
-      <div className="processing-principles" aria-label="Processing guarantees">
-        <span><Check size={14} /> No crop</span>
+      <div className="processing-principles" aria-label="Processing characteristics">
+        <span><Check size={14} /> Complete body</span>
         <span><Check size={14} /> No gaps</span>
         <span><ShieldCheck size={14} /> Local only</span>
       </div>
