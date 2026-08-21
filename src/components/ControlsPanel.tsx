@@ -16,7 +16,7 @@ const MODES: Array<{
   {
     value: 'mixed',
     title: 'Mixed carousel',
-    detail: 'Portrait cover · Landscape body',
+    detail: 'Portrait hero · Rotated landscape body',
   },
   {
     value: 'portrait',
@@ -113,6 +113,12 @@ export function ControlsPanel({
             );
           })}
         </div>
+
+        {options.mode === 'mixed' ? (
+          <p className="control-help">
+            Slide 01 is a portrait hero cover. Slide 02 restarts from the top of the source, then the full design continues left-to-right across 90° rotated landscape slides.
+          </p>
+        ) : null}
       </section>
 
       <section className="control-section compact-section">
@@ -136,7 +142,7 @@ export function ControlsPanel({
             />
           </div>
         </div>
-        <p className="control-help">Unused space on the final slide is filled with this color. Source content is never cropped.</p>
+        <p className="control-help">Unused space on the final slide is filled with this color. Source content is never cropped from the body sequence.</p>
       </section>
 
       <section className="control-section compact-section">
@@ -183,7 +189,7 @@ export function ControlsPanel({
 
       <div className="processing-principles" aria-label="Processing guarantees">
         <span><Check size={14} /> No crop</span>
-        <span><Check size={14} /> No overlap</span>
+        <span><Check size={14} /> No gaps</span>
         <span><ShieldCheck size={14} /> Local only</span>
       </div>
     </aside>
