@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { ArrowRight, Instagram, Layers3, RotateCcw, ScanLine } from 'lucide-react';
+import { pick, type Locale } from '../i18n';
 import './LandingDemo.css';
 import './LandingDemoPolish.css';
 
@@ -59,7 +60,7 @@ function SliceArtwork({ variant }: { variant: number }) {
   );
 }
 
-export function LandingDemo() {
+export function LandingDemo({ locale = 'en' }: { locale?: Locale }) {
   const rootRef = useRef<HTMLElement>(null);
   const [isActive, setIsActive] = useState(false);
   const [run, setRun] = useState(0);
@@ -96,13 +97,13 @@ export function LandingDemo() {
     <section className="landing-demo" ref={rootRef} aria-labelledby="landing-demo-title">
       <div className="landing-demo-heading">
         <div>
-          <span className="section-eyebrow">See it in action</span>
-          <h2 id="landing-demo-title">From one long website to an Instagram carousel.</h2>
-          <p>Capture once. Slicefolio turns the full design into an ordered, ready-to-post sequence.</p>
+          <span className="section-eyebrow">{pick(locale, 'See it in action', 'شاهدها عمليًا')}</span>
+          <h2 id="landing-demo-title">{pick(locale, 'From one long website to an Instagram carousel.', 'من موقع طويل واحد إلى كاروسيل جاهز لإنستغرام.')}</h2>
+          <p>{pick(locale, 'Capture once. Slicefolio turns the full design into an ordered, ready-to-post sequence.', 'التقط الصفحة مرة واحدة، وسيحوّل Slicefolio التصميم الكامل إلى تسلسل مرتب وجاهز للنشر.')}</p>
         </div>
         <button type="button" className="demo-replay" onClick={replay}>
           <RotateCcw size={15} />
-          Replay
+          {pick(locale, 'Replay', 'إعادة العرض')}
         </button>
       </div>
 
@@ -117,7 +118,7 @@ export function LandingDemo() {
         <article className="demo-step demo-capture-step">
           <header className="demo-step-label">
             <span>01</span>
-            <div><strong>Capture</strong></div>
+            <div><strong>{pick(locale, 'Capture', 'التقاط الصفحة')}</strong></div>
           </header>
 
           <div className="demo-browser">
@@ -128,7 +129,7 @@ export function LandingDemo() {
             </div>
             <div className="demo-browser-viewport">
               <div className="demo-site-track"><SampleWebsite /></div>
-              <div className="demo-capture-scan"><span>FULL PAGE</span></div>
+              <div className="demo-capture-scan"><span>{pick(locale, 'FULL PAGE', 'الصفحة كاملة')}</span></div>
               <div className="demo-capture-ruler" aria-hidden="true"><i /><i /><i /><i /><i /></div>
             </div>
           </div>
@@ -139,7 +140,7 @@ export function LandingDemo() {
         <article className="demo-step demo-slice-step">
           <header className="demo-step-label">
             <span>02</span>
-            <div><strong>Slice</strong></div>
+            <div><strong>{pick(locale, 'Slice', 'تقطيع')}</strong></div>
           </header>
 
           <div className="demo-processor">
@@ -156,7 +157,7 @@ export function LandingDemo() {
                 <span className="demo-cut-line demo-cut-line-3" />
               </div>
 
-              <div className="demo-slice-output" aria-label="Generated carousel slices">
+              <div className="demo-slice-output" aria-label={pick(locale, 'Generated carousel slices', 'شرائح الكاروسيل الناتجة')}>
                 {[1, 2, 3, 4].map((item) => (
                   <div className={`demo-output-card demo-output-card-${item}`} key={item}>
                     <SliceArtwork variant={item} />
@@ -167,8 +168,8 @@ export function LandingDemo() {
             </div>
 
             <div className="demo-processor-footer">
-              <span><Layers3 size={13} /> 8 slides</span>
-              <strong>Ready</strong>
+              <span><Layers3 size={13} /> {pick(locale, '8 slides', '8 شرائح')}</span>
+              <strong>{pick(locale, 'Ready', 'جاهز')}</strong>
             </div>
           </div>
         </article>
@@ -178,25 +179,25 @@ export function LandingDemo() {
         <article className="demo-step demo-publish-step">
           <header className="demo-step-label">
             <span>03</span>
-            <div><strong>Publish</strong></div>
+            <div><strong>{pick(locale, 'Publish', 'نشر')}</strong></div>
           </header>
 
           <div className="demo-instagram-card">
             <div className="demo-instagram-header">
               <div className="demo-ig-avatar">SF</div>
-              <div><strong>yourstudio</strong><span>Portfolio</span></div>
+              <div><strong>yourstudio</strong><span>{pick(locale, 'Portfolio', 'معرض أعمال')}</span></div>
               <b>•••</b>
             </div>
 
             <div className="demo-instagram-media">
               <div className="demo-ig-carousel">
-                <div className="demo-ig-slide demo-ig-cover"><span>WEBSITE<br />CASE STUDY</span><strong>Northline®</strong></div>
+                <div className="demo-ig-slide demo-ig-cover"><span>{pick(locale, 'WEBSITE', 'دراسة حالة')}<br />{pick(locale, 'CASE STUDY', 'موقع')}</span><strong>Northline®</strong></div>
                 {[1, 2, 3].map((item) => (
                   <div className="demo-ig-slide demo-ig-body" key={item}><SliceArtwork variant={item} /></div>
                 ))}
               </div>
               <span className="demo-ig-counter">1/8</span>
-              <div className="demo-swipe-cue" aria-hidden="true"><span>Swipe</span><ArrowRight size={13} /></div>
+              <div className="demo-swipe-cue" aria-hidden="true"><span>{pick(locale, 'Swipe', 'اسحب')}</span><ArrowRight size={13} /></div>
             </div>
 
             <div className="demo-instagram-actions">
@@ -205,7 +206,7 @@ export function LandingDemo() {
             <div className="demo-ig-dots" aria-hidden="true"><i /><i /><i /><i /></div>
           </div>
 
-          <div className="demo-published-badge"><Instagram size={14} />Ready to post</div>
+          <div className="demo-published-badge"><Instagram size={14} />{pick(locale, 'Ready to post', 'جاهز للنشر')}</div>
         </article>
       </div>
     </section>
