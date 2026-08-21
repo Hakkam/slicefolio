@@ -1,11 +1,22 @@
-import { Check, FileImage, FileText, Layers3, ShieldCheck } from 'lucide-react';
+import {
+  Check,
+  FileImage,
+  FileText,
+  Layers3,
+  Link2,
+  ShieldCheck,
+  Trash2,
+  Unlink2,
+} from 'lucide-react';
 import type { OutputMode, SliceOptions, SourceDocument } from '../types';
 
 interface ControlsPanelProps {
   source: SourceDocument;
   options: SliceOptions;
   estimatedCount: number;
+  selectedCount: number;
   onOptionsChange: (next: SliceOptions) => void;
+  onClearSelected: () => void;
 }
 
 const MODES: Array<{
@@ -24,7 +35,7 @@ const MODES: Array<{
     value: 'tall',
     title: 'Tall 3:4',
     detail: '1080 × 1440',
-    glyphClass: 'ratio-portrait',
+    glyphClass: 'ratio-tall',
   },
   {
     value: 'square',
@@ -34,6 +45,9 @@ const MODES: Array<{
   },
 ];
 
+const PADDING_SIDES = ['top', 'right', 'bottom', 'left'] as const;
+type PaddingSide = (typeof PADDING_SIDES)[number];
+
 function formatBytes(bytes: number) {
   if (!bytes) return '0 B';
   const units = ['B', 'KB', 'MB', 'GB'];
@@ -42,14 +56,39 @@ function formatBytes(bytes: number) {
   return `${value >= 10 || exponent === 0 ? value.toFixed(0) : value.toFixed(1)} ${units[exponent]}`;
 }
 
+function clampPadding(value: number) {
+  if (!Number.isFinite(value)) return 0;
+  return Math.max(0, Math.min(420, Math.round(value)));
+}
+
 export function ControlsPanel({
   source,
   options,
   estimatedCount,
+  selectedCount,
   onOptionsChange,
+  onClearSelected,
 }: ControlsPanelProps) {
   const update = <Key extends keyof SliceOptions>(key: Key, value: SliceOptions[Key]) => {
     onOptionsChange({ ...options, [key]: value });
+  };
+
+  const updatePadding = (patch: Partial<SliceOptions['padding']>) => {
+    onOptionsChange({
+      ...options,
+      padding: { ...options.padding, ...patch },
+    });
+  };
+
+  const updatePaddingSide = (side: PaddingSide, rawValue: number) => {
+    const value = clampPadding(rawValue);
+
+    if (options.padding.linked) {
+      updatePadding({ top: value, right: value, bottom: value, left: value });
+      return;
+    }
+
+    updatePadding({ [side]: value });
   };
 
   return (
@@ -118,6 +157,109 @@ export function ControlsPanel({
         </p>
       </section>
 
+      <section className="control-section padding-section">
+        <div className="section-heading">
+          <div>
+            <div className="section-eyebrow">Spacing</div>
+            <h2>Slide padding</h2>
+          </div>
+          <button
+            type="button"
+            className={`mini-toggle${options.padding.enabled ? ' is-active' : ''}`}
+            aria-pressed={options.padding.enabled}
+            onClick={() => updatePadding({ enabled: !options.padding.enabled })}
+          >
+            {options.padding.enabled ? 'On' : 'Off'}
+          </button>
+        </div>
+
+        <div className={`padding-controls${options.padding.enabled ? '' : ' is-disabled'}`}>
+          <div className="segmented-control padding-scope" role="radiogroup" aria-label="Padding scope">
+            <button
+              type="button"
+              role="radio"
+              aria-checked={options.padding.scope === 'all'}
+              className={options.padding.scope === 'all' ? 'is-active' : ''}
+              onClick={() => updatePadding({ scope: 'all' })}
+            >
+              All slides
+            </button>
+            <button
+              type="button"
+              role="radio"
+              aria-checked={options.padding.scope === 'selected'}
+              className={options.padding.scope === 'selected' ? 'is-active' : ''}
+              onClick={() => updatePadding({ scope: 'selected' })}
+            >
+              Selected
+            </button>
+          </div>
+
+          {options.padding.scope === 'selected' ? (
+            <div className="selected-slides-note">
+              <span>{selectedCount} {selectedCount === 1 ? 'slide' : 'slides'} selected</span>
+              {selectedCount > 0 ? (
+                <button type="button" onClick={onClearSelected}>
+                  <Trash2 size={13} />
+                  Clear
+                </button>
+              ) : null}
+            </div>
+          ) : null}
+
+          <div className="padding-link-row">
+            <span>Directions</span>
+            <button
+              type="button"
+              className={`link-sides-button${options.padding.linked ? ' is-active' : ''}`}
+              aria-pressed={options.padding.linked}
+              onClick={() => updatePadding({ linked: !options.padding.linked })}
+            >
+              {options.padding.linked ? <Link2 size={14} /> : <Unlink2 size={14} />}
+              {options.padding.linked ? 'All sides linked' : 'Edit sides separately'}
+            </button>
+          </div>
+
+          <div className="padding-grid">
+            {PADDING_SIDES.map((side) => (
+              <label key={side} className={`padding-input padding-${side}`}>
+                <span>{side}</span>
+                <div>
+                  <input
+                    type="number"
+                    min="0"
+                    max="420"
+                    step="8"
+                    value={options.padding[side]}
+                    onChange={(event) => updatePaddingSide(side, Number(event.target.value))}
+                  />
+                  <span>px</span>
+                </div>
+              </label>
+            ))}
+          </div>
+
+          <div className="padding-presets" aria-label="Padding presets">
+            {[0, 24, 48, 72].map((value) => (
+              <button
+                key={value}
+                type="button"
+                onClick={() => updatePadding({ top: value, right: value, bottom: value, left: value })}
+              >
+                {value}px
+              </button>
+            ))}
+          </div>
+
+          <p className="control-help">
+            Padding is a minimum inset. Slicefolio keeps the slide contained and proportional, so one-sided padding may create extra breathing room on another axis instead of distorting the design.
+          </p>
+          {options.padding.scope === 'selected' ? (
+            <p className="control-help selection-help">Select individual slides from the thumbnail strip in the preview.</p>
+          ) : null}
+        </div>
+      </section>
+
       <section className="control-section compact-section">
         <div className="section-heading inline-heading">
           <div>
@@ -139,7 +281,7 @@ export function ControlsPanel({
             />
           </div>
         </div>
-        <p className="control-help">Unused space on the final slide is filled with this color. Source content is never cropped from the body sequence.</p>
+        <p className="control-help">Unused canvas space and padding use this color. Source content is never cropped from the body sequence.</p>
       </section>
 
       <section className="control-section compact-section">
