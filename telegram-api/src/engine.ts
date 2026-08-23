@@ -33,15 +33,10 @@ const FRAME_PRESETS = {
 } as const satisfies Record<OutputMode, { width: number; height: number }>;
 
 function installPdfCanvasGlobals() {
-  const globals = globalThis as typeof globalThis & {
-    DOMMatrix?: typeof DOMMatrix;
-    ImageData?: typeof ImageData;
-    Path2D?: typeof Path2D;
-  };
-
-  globals.DOMMatrix ??= DOMMatrix;
-  globals.ImageData ??= ImageData;
-  globals.Path2D ??= Path2D;
+  const globals = globalThis as unknown as Record<string, unknown>;
+  if (!globals.DOMMatrix) globals.DOMMatrix = DOMMatrix;
+  if (!globals.ImageData) globals.ImageData = ImageData;
+  if (!globals.Path2D) globals.Path2D = Path2D;
 }
 
 function sniffSourceKind(input: SourceInput): SourceKind {
@@ -121,15 +116,16 @@ async function loadPdfSource(input: SourceInput, limits: ProcessingLimits): Prom
     throw new Error('This PDF could not be opened. It may be corrupt or password protected.');
   }
 
-  if (pdf.numPages > limits.maxPdfPages) {
+  const pageCount = pdf.numPages;
+  if (pageCount > limits.maxPdfPages) {
     await pdf.destroy();
-    throw new Error(`This PDF has ${pdf.numPages} pages. The server limit is ${limits.maxPdfPages}.`);
+    throw new Error(`This PDF has ${pageCount} pages. The server limit is ${limits.maxPdfPages}.`);
   }
 
   const segments: Omit<SourceSegment, 'normalizedHeight'>[] = [];
 
   try {
-    for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber += 1) {
+    for (let pageNumber = 1; pageNumber <= pageCount; pageNumber += 1) {
       const page = await pdf.getPage(pageNumber);
       const baseViewport = page.getViewport({ scale: 1 });
       const targetWidth = Math.min(
@@ -169,7 +165,7 @@ async function loadPdfSource(input: SourceInput, limits: ProcessingLimits): Prom
     await pdf.destroy();
   }
 
-  return normalizeSegments(input.name, 'pdf', input.buffer.length, pdf.numPages, segments);
+  return normalizeSegments(input.name, 'pdf', input.buffer.length, pageCount, segments);
 }
 
 export async function loadSource(input: SourceInput, limits: ProcessingLimits): Promise<SourceDocument> {
