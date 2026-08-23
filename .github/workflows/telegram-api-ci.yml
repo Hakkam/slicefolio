@@ -1,0 +1,33 @@
+name: Telegram API CI
+
+on:
+  pull_request:
+    paths:
+      - 'telegram-api/**'
+      - '.github/workflows/telegram-api-ci.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'telegram-api/**'
+      - '.github/workflows/telegram-api-ci.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: telegram-api
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: telegram-api/package.json
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+      - name: TypeScript check
+        run: npm run check
+      - name: Build
+        run: npm run build
