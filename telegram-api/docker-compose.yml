@@ -1,0 +1,27 @@
+services:
+  api:
+    build: .
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 8787
+      API_KEY: ${API_KEY}
+      MAX_FILE_SIZE_MB: ${MAX_FILE_SIZE_MB:-250}
+      MAX_PDF_PAGES: ${MAX_PDF_PAGES:-50}
+      MAX_SLIDES: ${MAX_SLIDES:-100}
+      RATE_LIMIT_WINDOW_MS: ${RATE_LIMIT_WINDOW_MS:-900000}
+      RATE_LIMIT_MAX: ${RATE_LIMIT_MAX:-30}
+    ports:
+      - "8787:8787"
+
+  bot:
+    build: .
+    restart: unless-stopped
+    command: ["npm", "run", "bot"]
+    depends_on:
+      - api
+    environment:
+      NODE_ENV: production
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+      SLICEFOLIO_API_URL: http://api:8787
+      SLICEFOLIO_API_KEY: ${API_KEY}
