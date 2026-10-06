@@ -138,8 +138,10 @@ function createSeoPlugin(siteUrl: string): Plugin {
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, '.', 'SLICEFOLIO_');
   const siteUrl = normalizeSiteUrl(env.SLICEFOLIO_SITE_URL);
+  const base = env.SLICEFOLIO_BASE_PATH?.trim() || '/';
 
   return {
+    base,
     plugins: [react(), createSeoPlugin(siteUrl)],
   };
 });

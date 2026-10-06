@@ -45,7 +45,7 @@ function getErrorMessage(error: unknown) {
 
 function Brand() {
   return (
-    <a className="brand" href="/" aria-label="Slicefolio home">
+    <a className="brand" href={import.meta.env.BASE_URL} aria-label="Slicefolio home">
       <span className="brand-mark" aria-hidden="true">
         <span />
         <span />

@@ -2,8 +2,6 @@
 
 Slicefolio is a browser-based tool for UI/UX designers, web designers, agencies, and creative professionals that converts full-page website designs, PDFs, and long images into Instagram-ready carousel slides.
 
-The public product name is **Slicefolio**. `insta-mockup` is only the repository working name.
-
 ## MVP behavior
 
 - Upload PDF, PNG, JPG, or WebP.
@@ -47,6 +45,25 @@ Create a production build with:
 ```bash
 npm run build
 ```
+
+## GitHub Pages deployment
+
+The repository includes a GitHub Actions workflow at `.github/workflows/deploy-pages.yml`.
+
+When GitHub Pages is configured to use **GitHub Actions**, every push to `main` builds the app and deploys the `dist/` output automatically.
+
+For the current repository name, the expected project Pages URL is:
+
+```text
+https://hakkam.github.io/slicefolio/
+```
+
+The workflow sets both deployment values automatically:
+
+- `SLICEFOLIO_SITE_URL` for canonical, Open Graph, structured data, sitemap, and robots metadata.
+- `SLICEFOLIO_BASE_PATH` so Vite assets and internal home links work correctly from the `/slicefolio/` project path.
+
+If the app later moves to a custom root domain, set `SLICEFOLIO_BASE_PATH=/` and use the custom origin for `SLICEFOLIO_SITE_URL`.
 
 ## Production SEO configuration
 
