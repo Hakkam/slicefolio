@@ -1,11 +1,15 @@
 export type Locale = 'en' | 'ar';
 
 export function localeFromPath(pathname = window.location.pathname): Locale {
-  return /^\/ar(?:\/|$)/.test(pathname) ? 'ar' : 'en';
+  const base = import.meta.env.BASE_URL;
+  const relativePath = pathname.startsWith(base)
+    ? pathname.slice(base.length)
+    : pathname.replace(/^\//, '');
+  return /^ar(?:\/|$)/.test(relativePath) ? 'ar' : 'en';
 }
 
 export function localePath(locale: Locale) {
-  return locale === 'ar' ? '/ar/' : '/';
+  return `${import.meta.env.BASE_URL}${locale === 'ar' ? 'ar/' : ''}`;
 }
 
 export function pick(locale: Locale, english: string, arabic: string) {
