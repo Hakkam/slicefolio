@@ -1,0 +1,235 @@
+/* Continuous in-view loops for the scroll-driven product journey. */
+
+/* A subtle shared float keeps every visual card alive while it is visible. */
+.demo-scroll-scene .demo-browser,
+.demo-scroll-scene .demo-processor,
+.demo-scroll-scene .demo-instagram-card {
+  animation: demoCardBreath 5.8s ease-in-out infinite;
+  animation-play-state: paused;
+  will-change: transform;
+}
+
+.demo-scroll-scene.is-active .demo-browser,
+.demo-scroll-scene.is-active .demo-processor,
+.demo-scroll-scene.is-active .demo-instagram-card {
+  animation: demoCardBreath 5.8s ease-in-out infinite;
+  animation-play-state: running;
+}
+
+@keyframes demoCardBreath {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+/* Capture ------------------------------------------------------------------ */
+
+.demo-scroll-scene .demo-site-track {
+  animation: demoScrollSiteLoop 8.6s cubic-bezier(.48, .08, .2, 1) infinite;
+  animation-play-state: paused;
+}
+
+.demo-scroll-scene .demo-capture-scan {
+  animation: demoScanLoop 8.6s linear infinite;
+  animation-play-state: paused;
+}
+
+.demo-scroll-scene.is-active .demo-site-track {
+  animation: demoScrollSiteLoop 8.6s cubic-bezier(.48, .08, .2, 1) infinite;
+  animation-play-state: running;
+}
+
+.demo-scroll-scene.is-active .demo-capture-scan {
+  animation: demoScanLoop 8.6s linear infinite;
+  animation-play-state: running;
+}
+
+@keyframes demoScrollSiteLoop {
+  0%, 7% { transform: translateY(0); }
+  42%, 56% { transform: translateY(-67%); }
+  92%, 100% { transform: translateY(0); }
+}
+
+@keyframes demoScanLoop {
+  0%, 7% { top: 8%; opacity: 0; }
+  11% { top: 12%; opacity: 1; }
+  42% { top: 90%; opacity: 1; }
+  47% { top: 90%; opacity: 0; }
+  48%, 100% { top: 8%; opacity: 0; }
+}
+
+/* Slice -------------------------------------------------------------------- */
+
+.demo-scroll-scene .demo-input-page {
+  animation: demoInputLoop 7.8s cubic-bezier(.2, .8, .2, 1) infinite;
+  animation-play-state: paused;
+}
+
+.demo-scroll-scene.is-active .demo-input-page {
+  animation: demoInputLoop 7.8s cubic-bezier(.2, .8, .2, 1) infinite;
+  animation-play-state: running;
+}
+
+.demo-scroll-scene .demo-cut-line {
+  opacity: 0;
+  animation-name: demoCutLineLoop;
+  animation-duration: 7.8s;
+  animation-timing-function: ease;
+  animation-iteration-count: infinite;
+  animation-play-state: paused;
+}
+
+.demo-scroll-scene .demo-cut-line-1 { animation-delay: .25s; }
+.demo-scroll-scene .demo-cut-line-2 { animation-delay: .65s; }
+.demo-scroll-scene .demo-cut-line-3 { animation-delay: 1.05s; }
+
+.demo-scroll-scene.is-active .demo-cut-line {
+  animation-name: demoCutLineLoop;
+  animation-duration: 7.8s;
+  animation-timing-function: ease;
+  animation-iteration-count: infinite;
+  animation-play-state: running;
+}
+
+.demo-scroll-scene.is-active .demo-cut-line-1 { animation-delay: .25s; }
+.demo-scroll-scene.is-active .demo-cut-line-2 { animation-delay: .65s; }
+.demo-scroll-scene.is-active .demo-cut-line-3 { animation-delay: 1.05s; }
+
+.demo-scroll-scene .demo-output-card {
+  animation-name: demoSliceCardLoop;
+  animation-duration: 7.8s;
+  animation-timing-function: cubic-bezier(.17, .84, .44, 1);
+  animation-iteration-count: infinite;
+  animation-play-state: paused;
+}
+
+.demo-scroll-scene .demo-output-card-1 { animation-delay: .8s; }
+.demo-scroll-scene .demo-output-card-2 { animation-delay: 1.18s; }
+.demo-scroll-scene .demo-output-card-3 { animation-delay: 1.56s; }
+.demo-scroll-scene .demo-output-card-4 { animation-delay: 1.94s; }
+
+.demo-scroll-scene.is-active .demo-output-card {
+  animation-name: demoSliceCardLoop;
+  animation-duration: 7.8s;
+  animation-timing-function: cubic-bezier(.17, .84, .44, 1);
+  animation-iteration-count: infinite;
+  animation-play-state: running;
+}
+
+.demo-scroll-scene.is-active .demo-output-card-1 { animation-delay: .8s; }
+.demo-scroll-scene.is-active .demo-output-card-2 { animation-delay: 1.18s; }
+.demo-scroll-scene.is-active .demo-output-card-3 { animation-delay: 1.56s; }
+.demo-scroll-scene.is-active .demo-output-card-4 { animation-delay: 1.94s; }
+
+html[dir='rtl'] .demo-scroll-scene .demo-output-card,
+html[dir='rtl'] .demo-scroll-scene.is-active .demo-output-card {
+  animation-name: demoSliceCardLoopRtl;
+}
+
+@keyframes demoInputLoop {
+  0%, 7%, 100% { opacity: .58; transform: scale(.94); }
+  20%, 70% { opacity: 1; transform: scale(1); }
+  91% { opacity: .68; transform: scale(.955); }
+}
+
+@keyframes demoCutLineLoop {
+  0%, 9%, 100% { opacity: 0; transform: scaleX(.18); }
+  18%, 67% { opacity: 1; transform: scaleX(1); }
+  80% { opacity: 0; transform: scaleX(.62); }
+}
+
+@keyframes demoSliceCardLoop {
+  0%, 10%, 100% {
+    opacity: 0;
+    transform: translateX(-45px) rotate(-90deg) scale(.8);
+  }
+  22% {
+    opacity: 1;
+    transform: translateX(4px) rotate(3deg) scale(1.03);
+  }
+  30%, 69% {
+    opacity: 1;
+    transform: none;
+  }
+  82% {
+    opacity: 0;
+    transform: translateX(22px) rotate(4deg) scale(.95);
+  }
+}
+
+@keyframes demoSliceCardLoopRtl {
+  0%, 10%, 100% {
+    opacity: 0;
+    transform: translateX(45px) rotate(90deg) scale(.8);
+  }
+  22% {
+    opacity: 1;
+    transform: translateX(-4px) rotate(-3deg) scale(1.03);
+  }
+  30%, 69% {
+    opacity: 1;
+    transform: none;
+  }
+  82% {
+    opacity: 0;
+    transform: translateX(-22px) rotate(-4deg) scale(.95);
+  }
+}
+
+/* Publish ------------------------------------------------------------------ */
+
+.demo-scroll-scene .demo-ig-carousel {
+  animation: demoCarouselSwipe 10.8s .5s both infinite;
+  animation-play-state: paused;
+}
+
+.demo-scroll-scene .demo-swipe-cue {
+  animation: demoSwipeCue 10.8s .5s both infinite;
+  animation-play-state: paused;
+}
+
+.demo-scroll-scene.is-active .demo-ig-carousel {
+  animation: demoCarouselSwipe 10.8s .5s both infinite;
+  animation-play-state: running;
+}
+
+.demo-scroll-scene.is-active .demo-swipe-cue {
+  animation: demoSwipeCue 10.8s .5s both infinite;
+  animation-play-state: running;
+}
+
+/* The orbit is also paused instead of reset when a scene leaves the viewport. */
+.demo-scroll-scene .demo-scene-orbit {
+  animation: demoSceneOrbit 18s linear infinite;
+  animation-play-state: paused;
+}
+
+.demo-scroll-scene.is-active .demo-scene-orbit {
+  animation: demoSceneOrbit 18s linear infinite;
+  animation-play-state: running;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .demo-scroll-scene .demo-browser,
+  .demo-scroll-scene .demo-processor,
+  .demo-scroll-scene .demo-instagram-card,
+  .demo-scroll-scene .demo-site-track,
+  .demo-scroll-scene .demo-capture-scan,
+  .demo-scroll-scene .demo-input-page,
+  .demo-scroll-scene .demo-cut-line,
+  .demo-scroll-scene .demo-output-card,
+  .demo-scroll-scene .demo-ig-carousel,
+  .demo-scroll-scene .demo-swipe-cue,
+  .demo-scroll-scene .demo-scene-orbit {
+    animation: none !important;
+  }
+
+  .demo-scroll-scene .demo-output-card {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .demo-scroll-scene .demo-input-page {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

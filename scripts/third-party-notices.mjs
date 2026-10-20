@@ -6,6 +6,8 @@ const lock = JSON.parse(await readFile('package-lock.json', 'utf8'));
 const sections = [
   'Slicefolio — license and third-party notices',
   await readFile('LICENSE', 'utf8'),
+  'IBM Plex Sans Arabic — SIL Open Font License 1.1',
+  await readFile('public/licenses/ibm-plex.txt', 'utf8'),
 ];
 for (const [directory, metadata] of Object.entries(lock.packages)) {
   if (!directory || metadata.dev) continue;

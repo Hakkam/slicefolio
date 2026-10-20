@@ -1,0 +1,286 @@
+/* Arabic-only direction pass for the animated landing product journey. */
+
+html[dir='rtl'] .demo-stage {
+  direction: rtl;
+}
+
+/* CSS Grid line numbering follows the RTL inline direction here, so column 1
+   is physically the rightmost column. Keep the Arabic story explicitly:
+   Capture (right) -> Slice (center) -> Publish (left). */
+@media (min-width: 861px) {
+  html[dir='rtl'] .demo-capture-step {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  html[dir='rtl'] .demo-flow-arrow-a {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  html[dir='rtl'] .demo-slice-step {
+    grid-column: 3;
+    grid-row: 1;
+  }
+
+  html[dir='rtl'] .demo-flow-arrow-b {
+    grid-column: 4;
+    grid-row: 1;
+  }
+
+  html[dir='rtl'] .demo-publish-step {
+    grid-column: 5;
+    grid-row: 1;
+  }
+
+  html[dir='rtl'] .demo-progress-line::after {
+    transform-origin: right center;
+  }
+
+  html[dir='rtl'] .demo-progress-dot-1 {
+    left: 92%;
+  }
+
+  html[dir='rtl'] .demo-progress-dot-2 {
+    left: 50%;
+  }
+
+  html[dir='rtl'] .demo-progress-dot-3 {
+    left: 8%;
+  }
+}
+
+html[dir='rtl'] .demo-flow-arrow svg {
+  transform: rotate(180deg);
+}
+
+html[dir='rtl'] .demo-flow-arrow span {
+  left: 12px;
+  right: 5px;
+  transform-origin: right center;
+}
+
+/* Arabic text inside the captured website -------------------------------- */
+
+html[dir='rtl'] .demo-site.demo-site-ar {
+  direction: rtl;
+  text-align: right;
+}
+
+html[dir='rtl'] .demo-site-ar .demo-site-nav {
+  direction: rtl;
+}
+
+html[dir='rtl'] .demo-site-ar .demo-site-nav > div {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+html[dir='rtl'] .demo-site-ar .demo-site-kicker,
+html[dir='rtl'] .demo-site-ar .demo-site-intro span,
+html[dir='rtl'] .demo-site-ar .demo-site-project small {
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+html[dir='rtl'] .demo-site-ar .demo-site-hero strong {
+  max-width: 76%;
+  font-size: 20px;
+  line-height: 1.22;
+  letter-spacing: 0;
+}
+
+html[dir='rtl'] .demo-site-ar .demo-site-hero p {
+  line-height: 1.55;
+}
+
+html[dir='rtl'] .demo-site-ar .demo-site-hero-art {
+  right: auto;
+  left: -8%;
+}
+
+html[dir='rtl'] .demo-site-ar .demo-site-intro strong {
+  font-size: 12px;
+  line-height: 1.35;
+  letter-spacing: 0;
+}
+
+html[dir='rtl'] .demo-site-ar .demo-site-project > div:last-child {
+  direction: rtl;
+}
+
+html[dir='rtl'] .demo-site-ar .demo-site-quote strong {
+  font-size: 15px;
+  line-height: 1.35;
+  letter-spacing: 0;
+}
+
+html[dir='rtl'] .demo-site-ar .demo-site-footer strong {
+  font-size: 17px;
+  line-height: 1.3;
+  letter-spacing: 0;
+}
+
+html[dir='rtl'] .demo-site-ar .demo-site-footer span {
+  direction: ltr;
+  align-self: flex-end;
+  unicode-bidi: isolate;
+}
+
+/* Inside the processor, source remains on the right and output on the left. */
+html[dir='rtl'] .demo-processor-body {
+  direction: rtl;
+}
+
+html[dir='rtl'] .demo-input-strip {
+  border-right: 0;
+  border-left: 1px solid var(--line);
+}
+
+html[dir='rtl'] .demo-slice-output {
+  direction: rtl;
+}
+
+@keyframes demoSliceCardRtl {
+  0% {
+    opacity: 0;
+    transform: translateX(45px) rotate(90deg) scale(.8);
+  }
+
+  65% {
+    opacity: 1;
+    transform: translateX(-4px) rotate(-3deg) scale(1.03);
+  }
+
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+html[dir='rtl'] .demo-stage.is-running .demo-output-card {
+  animation-name: demoSliceCardRtl;
+}
+
+/* Arabic text inside the Instagram mockup -------------------------------- */
+
+html[dir='rtl'] .demo-instagram-card-ar {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Phone chrome and the Instagram brand remain spatially LTR. */
+html[dir='rtl'] .demo-instagram-card-ar .demo-phone-status,
+html[dir='rtl'] .demo-instagram-card-ar .demo-instagram-appbar {
+  direction: ltr;
+  text-align: left;
+}
+
+html[dir='rtl'] .demo-instagram-card-ar .demo-instagram-header {
+  direction: rtl;
+}
+
+html[dir='rtl'] .demo-instagram-card-ar .demo-instagram-header > div:nth-child(2) {
+  text-align: right;
+}
+
+html[dir='rtl'] .demo-instagram-card-ar .demo-instagram-header > div:nth-child(2) strong {
+  direction: ltr;
+  unicode-bidi: isolate;
+  text-align: right;
+}
+
+html[dir='rtl'] .demo-instagram-card-ar .demo-instagram-header b {
+  justify-self: start;
+}
+
+/* Carousel transform remains LTR because the animation translates on X. */
+html[dir='rtl'] .demo-ig-carousel {
+  direction: ltr;
+}
+
+html[dir='rtl'] .demo-instagram-card-ar .demo-ig-cover {
+  direction: rtl;
+  text-align: right;
+}
+
+html[dir='rtl'] .demo-instagram-card-ar .demo-ig-cover span {
+  max-width: 62%;
+  font-size: 7px;
+  line-height: 1.6;
+  letter-spacing: 0;
+}
+
+html[dir='rtl'] .demo-instagram-card-ar .demo-ig-cover strong {
+  font-size: 19px;
+  line-height: 1.25;
+  letter-spacing: 0;
+}
+
+html[dir='rtl'] .demo-instagram-card-ar .demo-ig-cover::before {
+  right: auto;
+  left: -14%;
+}
+
+html[dir='rtl'] .demo-instagram-card-ar .demo-ig-cover::after {
+  right: auto;
+  left: 17%;
+}
+
+html[dir='rtl'] .demo-instagram-card-ar .demo-swipe-cue {
+  direction: rtl;
+  right: auto;
+  left: 9px;
+}
+
+html[dir='rtl'] .demo-instagram-card-ar .demo-swipe-cue svg {
+  transform: rotate(180deg);
+}
+
+html[dir='rtl'] .demo-instagram-card-ar .demo-ig-counter {
+  right: auto;
+  left: 9px;
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+html[dir='rtl'] .demo-instagram-card-ar .demo-instagram-cta {
+  direction: rtl;
+  text-align: right;
+}
+
+html[dir='rtl'] .demo-instagram-card-ar .demo-instagram-cta svg {
+  transform: rotate(180deg);
+}
+
+html[dir='rtl'] .demo-instagram-card-ar .demo-instagram-actions {
+  direction: rtl;
+}
+
+html[dir='rtl'] .demo-instagram-card-ar .demo-instagram-caption {
+  direction: rtl;
+  text-align: right;
+  line-height: 1.55;
+}
+
+html[dir='rtl'] .demo-instagram-card-ar .demo-instagram-caption strong {
+  margin-right: 0;
+  margin-left: 4px;
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+/* Mobile is a vertical story. */
+@media (max-width: 860px) {
+  html[dir='rtl'] .demo-flow-arrow svg {
+    transform: none;
+  }
+
+  html[dir='rtl'] .demo-flow-arrow span {
+    width: 28px;
+    left: 50%;
+    right: auto;
+    margin-left: -21px;
+    transform-origin: left center;
+  }
+}

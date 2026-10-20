@@ -32,7 +32,8 @@ memory. Password-protected PDFs are not supported.
 - Padding can be linked across all sides or controlled independently for top, right, bottom, and left.
 - Export PNG or JPEG.
 - Download one slide or package the full ordered sequence as a ZIP.
-- The landing page keeps the original restrained visual direction. Experimental visual redesign work remains deferred.
+- The landing page includes a scroll-driven product journey demo and English/Arabic localization.
+- Both language routes work under the GitHub Pages project path: `/slicefolio/` and `/slicefolio/ar/`.
 - The landing footer includes a development credit linking to hakkam.com.
 
 ## Stack
