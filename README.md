@@ -2,7 +2,16 @@
 
 Slicefolio is a browser-based tool for UI/UX designers, web designers, agencies, and creative professionals that converts full-page website designs, PDFs, and long images into Instagram-ready carousel slides.
 
-The public product name is **Slicefolio**. `insta-mockup` is only the repository working name.
+[Deployment guide](docs/DEPLOYMENT.md) · [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md) · [MIT license](LICENSE)
+
+**Public demo address after deployment:** https://hakkam.github.io/slicefolio/
+
+## Quick start
+
+Use Node.js 24 and npm. No account, API key, or backend is required.
+Clone this repository, install dependencies, and start the development server using
+the commands below. A 250 MB input limit applies; practical limits depend on browser
+memory. Password-protected PDFs are not supported.
 
 ## MVP behavior
 
@@ -23,7 +32,8 @@ The public product name is **Slicefolio**. `insta-mockup` is only the repository
 - Padding can be linked across all sides or controlled independently for top, right, bottom, and left.
 - Export PNG or JPEG.
 - Download one slide or package the full ordered sequence as a ZIP.
-- The landing page keeps the original restrained visual direction. Experimental visual redesign work remains deferred.
+- The landing page includes a scroll-driven product journey demo and English/Arabic localization.
+- Both language routes work under the GitHub Pages project path: `/slicefolio/` and `/slicefolio/ar/`.
 - The landing footer includes a development credit linking to hakkam.com.
 
 ## Stack
@@ -38,7 +48,9 @@ The public product name is **Slicefolio**. `insta-mockup` is only the repository
 ## Local development
 
 ```bash
-npm install
+git clone https://github.com/Hakkam/slicefolio.git
+cd slicefolio
+npm ci
 npm run dev
 ```
 
@@ -47,6 +59,25 @@ Create a production build with:
 ```bash
 npm run build
 ```
+
+## GitHub Pages deployment
+
+The repository includes a GitHub Actions workflow at `.github/workflows/deploy-pages.yml`.
+
+When GitHub Pages is configured to use **GitHub Actions**, every push to `main` builds the app and deploys the `dist/` output automatically.
+
+For the current repository name, the expected project Pages URL is:
+
+```text
+https://hakkam.github.io/slicefolio/
+```
+
+The workflow sets both deployment values automatically:
+
+- `SLICEFOLIO_SITE_URL` for canonical, Open Graph, structured data, sitemap, and robots metadata.
+- `SLICEFOLIO_BASE_PATH` so Vite assets and internal home links work correctly from the `/slicefolio/` project path.
+
+If the app later moves to a custom root domain, set `SLICEFOLIO_BASE_PATH=/` and use the custom origin for `SLICEFOLIO_SITE_URL`.
 
 ## Production SEO configuration
 
@@ -113,3 +144,27 @@ Long PDF pages are rendered in internal vertical tiles instead of one extremely 
 ## Current scope
 
 This MVP deliberately does not perform semantic section detection, AI layout analysis, or smart cut placement. The slicing model is sequential and deterministic by design.
+
+## Project layout
+
+- `src/components/`: import controls and slide previews.
+- `src/lib/media.ts`: local decoding, PDF rendering, and sequential slicing.
+- `src/lib/export.ts`: individual downloads and ZIP packaging.
+- `public/`: static brand and sharing assets.
+- `vite.config.ts`: deployment paths and generated SEO metadata.
+- `.github/workflows/`: build checks and Pages deployment.
+
+## Contributing and support
+
+Use [issues](https://github.com/Hakkam/slicefolio/issues) for reproducible bugs and
+feature proposals. Follow [CONTRIBUTING.md](CONTRIBUTING.md) and the
+[code of conduct](CODE_OF_CONDUCT.md). For vulnerabilities, use the private
+instructions in [SECURITY.md](SECURITY.md).
+
+## License and attribution
+
+Original project code and documentation are available under the [MIT license](LICENSE),
+including commercial use and modification subject to its notice requirements.
+Dependencies retain their own licenses; see [third-party notices](THIRD_PARTY_NOTICES.md).
+The package remains `private: true` to prevent accidental npm publication; this does
+not prevent public GitHub hosting or open-source use.
