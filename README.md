@@ -2,6 +2,17 @@
 
 Slicefolio is a browser-based tool for UI/UX designers, web designers, agencies, and creative professionals that converts full-page website designs, PDFs, and long images into Instagram-ready carousel slides.
 
+[Deployment guide](docs/DEPLOYMENT.md) · [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md) · [MIT license](LICENSE)
+
+**Public demo address after deployment:** https://hakkam.github.io/slicefolio/
+
+## Quick start
+
+Use Node.js 24 and npm. No account, API key, or backend is required.
+Clone this repository, install dependencies, and start the development server using
+the commands below. A 250 MB input limit applies; practical limits depend on browser
+memory. Password-protected PDFs are not supported.
+
 ## MVP behavior
 
 - Upload PDF, PNG, JPG, or WebP.
@@ -36,6 +47,8 @@ Slicefolio is a browser-based tool for UI/UX designers, web designers, agencies,
 ## Local development
 
 ```bash
+git clone https://github.com/Hakkam/slicefolio.git
+cd slicefolio
 npm install
 npm run dev
 ```
@@ -130,3 +143,27 @@ Long PDF pages are rendered in internal vertical tiles instead of one extremely 
 ## Current scope
 
 This MVP deliberately does not perform semantic section detection, AI layout analysis, or smart cut placement. The slicing model is sequential and deterministic by design.
+
+## Project layout
+
+- `src/components/`: import controls and slide previews.
+- `src/lib/media.ts`: local decoding, PDF rendering, and sequential slicing.
+- `src/lib/export.ts`: individual downloads and ZIP packaging.
+- `public/`: static brand and sharing assets.
+- `vite.config.ts`: deployment paths and generated SEO metadata.
+- `.github/workflows/`: build checks and Pages deployment.
+
+## Contributing and support
+
+Use [issues](https://github.com/Hakkam/slicefolio/issues) for reproducible bugs and
+feature proposals. Follow [CONTRIBUTING.md](CONTRIBUTING.md) and the
+[code of conduct](CODE_OF_CONDUCT.md). For vulnerabilities, use the private
+instructions in [SECURITY.md](SECURITY.md).
+
+## License and attribution
+
+Original project code and documentation are available under the [MIT license](LICENSE),
+including commercial use and modification subject to its notice requirements.
+Dependencies retain their own licenses; see [third-party notices](THIRD_PARTY_NOTICES.md).
+The package remains `private: true` to prevent accidental npm publication; this does
+not prevent public GitHub hosting or open-source use.

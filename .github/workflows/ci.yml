@@ -4,10 +4,12 @@ on:
   push:
     branches:
       - main
-      - feat/slicefolio-mvp
   pull_request:
     branches:
       - main
+
+permissions:
+  contents: read
 
 jobs:
   build:
