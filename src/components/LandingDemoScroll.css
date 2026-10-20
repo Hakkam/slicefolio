@@ -141,13 +141,13 @@
   --scene-tilt: 2deg;
   --scene-glow: 0;
   position: relative;
-  min-height: clamp(650px, 88vh, 840px);
+  min-height: clamp(640px, 80vh, 780px);
   display: grid;
   grid-template-columns: minmax(0, .88fr) minmax(380px, 1.12fr);
   grid-template-areas: 'copy visual';
   align-items: center;
   gap: clamp(52px, 8vw, 112px);
-  padding: clamp(72px, 10vh, 112px) 4px;
+  padding: clamp(52px, 7vh, 78px) 4px;
   border-top: 1px solid var(--line);
   isolation: isolate;
 }
