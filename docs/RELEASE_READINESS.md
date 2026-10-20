@@ -28,17 +28,20 @@ Deployment write permissions are scoped to the deployment job.
 
 ## Verification and outstanding actions
 
-Local dependency installation was blocked by network access; offline installation
-also failed because required packages were not cached. A lockfile could not be
-generated safely. No lockfile has been fabricated, and no local build success is claimed.
-CI continues using `npm install` until a real lockfile is committed.
+Local dependency installation was blocked by DNS/network access. A branch-scoped
+GitHub Actions job generated the real npm lockfile with Node 24, and an explicit
+`npm audit --audit-level=low` found zero known vulnerabilities on 2026-10-20.
+The temporary job was removed after saving the lockfile. This result reflects
+the advisory database at that time and is not a permanent security guarantee.
+
+Both workflows use `npm ci`, audit dependencies, and build with Node 24.
+Actions are pinned to commit SHAs, with Dependabot configured to propose updates.
+Every build bundles runtime license/notice texts in `third-party-notices.txt`.
+The CI build uses the actual Pages project subpath.
 
 Before release:
-1. Require the preparation PR's build check to pass.
-2. Generate and commit `package-lock.json` with Node 24, run `npm audit`, address
-   findings with review, then change both workflows and contributor instructions
-   to `npm ci`. Do not use automatic force upgrades without compatibility review.
-3. Review the remaining publication surfaces and asset ownership.
+1. Require the final preparation PR's locked install, audit, and build checks to pass.
+2. Review the remaining publication surfaces and asset ownership.
 4. Complete administrator settings in [DEPLOYMENT.md](DEPLOYMENT.md).
 5. Verify the production browser workflow before tagging a release.
 

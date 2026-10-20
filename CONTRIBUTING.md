@@ -8,7 +8,7 @@ For substantial behavior or design changes, open an issue before implementation.
 Use Node.js 24 and npm. Fork the repository, create a branch, then run:
 
 ```sh
-npm install
+npm ci
 npm run dev
 npm run build
 npm run preview

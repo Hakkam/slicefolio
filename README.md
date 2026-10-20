@@ -49,7 +49,7 @@ memory. Password-protected PDFs are not supported.
 ```bash
 git clone https://github.com/Hakkam/slicefolio.git
 cd slicefolio
-npm install
+npm ci
 npm run dev
 ```
 
