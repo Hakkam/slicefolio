@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc --noEmit && vite build",
+    "build": "tsc --noEmit && vite build && node scripts/third-party-notices.mjs",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -21,5 +21,18 @@
     "@vitejs/plugin-react": "^4.3.4",
     "typescript": "^5.7.2",
     "vite": "^6.0.5"
-  }
+  },
+  "description": "Convert PDFs and long designs into carousel slides locally in your browser.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hakkam/slicefolio.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Hakkam/slicefolio/issues"
+  },
+  "homepage": "https://hakkam.github.io/slicefolio/"
 }
