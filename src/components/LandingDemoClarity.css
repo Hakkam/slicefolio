@@ -1,0 +1,25 @@
+/* Keep the visual cards fully legible while they are participating in a scene.
+   Scroll progress still controls depth, position, tilt and glow — not card washout. */
+
+.demo-scene-stage .demo-browser,
+.demo-scene-stage .demo-processor,
+.demo-scene-stage .demo-instagram-card {
+  opacity: 1;
+}
+
+.demo-scroll-scene.is-active .demo-scene-visual {
+  opacity: 1 !important;
+}
+
+/* The legacy demo started processor/publish cards partially faded and relied
+   on a one-shot reveal animation to reach full opacity. The looped scroll story
+   uses a different animation, so force the final intended visual state here. */
+.demo-scroll-scene .demo-processor,
+.demo-scroll-scene .demo-instagram-card {
+  opacity: 1 !important;
+}
+
+.demo-scroll-scene.is-active .demo-processor,
+.demo-scroll-scene.is-active .demo-instagram-card {
+  opacity: 1 !important;
+}

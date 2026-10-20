@@ -1,0 +1,43 @@
+/* Arabic-only corrections for the scroll-driven Slicefolio story. */
+
+/* Use explicit physical grid areas instead of relying on RTL auto-placement.
+   The long source stays on the right and generated slices stay on the left. */
+html[dir='rtl'] .demo-scene-stage .demo-processor-body {
+  direction: ltr;
+  grid-template-columns: minmax(0, 1fr) 34%;
+  grid-template-areas: 'output source';
+}
+
+html[dir='rtl'] .demo-scene-stage .demo-input-strip {
+  grid-area: source;
+  border-right: 0;
+  border-left: 1px solid var(--line);
+}
+
+html[dir='rtl'] .demo-scene-stage .demo-slice-output {
+  grid-area: output;
+  direction: rtl;
+}
+
+/* Keep the miniature product chrome spatially stable while Arabic copy inside
+   the captured source remains RTL. */
+html[dir='rtl'] .demo-scene-stage .demo-processor-topbar {
+  direction: ltr;
+}
+
+html[dir='rtl'] .demo-scene-stage .demo-processor-footer {
+  direction: rtl;
+}
+
+html[dir='rtl'] .demo-scene-stage .demo-processor-footer > strong,
+html[dir='rtl'] .demo-scene-stage .demo-processor-topbar > span {
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+/* Preserve the Arabic output direction for the continuous loop. The actual
+   animation timing is owned by LandingDemoLoop.css. */
+html[dir='rtl'] .demo-scroll-scene .demo-output-card,
+html[dir='rtl'] .demo-scroll-scene.is-active .demo-output-card {
+  animation-name: demoSliceCardLoopRtl;
+}

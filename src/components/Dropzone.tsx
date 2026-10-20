@@ -1,12 +1,14 @@
 import { useRef, useState } from 'react';
 import { FileImage, FileText, LockKeyhole, UploadCloud } from 'lucide-react';
+import { pick, type Locale } from '../i18n';
 
 interface DropzoneProps {
   onFile: (file: File) => void;
   disabled?: boolean;
+  locale?: Locale;
 }
 
-export function Dropzone({ onFile, disabled = false }: DropzoneProps) {
+export function Dropzone({ onFile, disabled = false, locale = 'en' }: DropzoneProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [dragging, setDragging] = useState(false);
 
@@ -47,13 +49,13 @@ export function Dropzone({ onFile, disabled = false }: DropzoneProps) {
           <UploadCloud size={26} strokeWidth={1.8} />
         </span>
         <span className="dropzone-copy">
-          <strong>Drop your full-page design here</strong>
-          <span>or click to choose a file</span>
+          <strong>{pick(locale, 'Drop your full-page design here', 'ضع تصميم الصفحة الكاملة هنا')}</strong>
+          <span>{pick(locale, 'or click to choose a file', 'أو اضغط لاختيار ملف')}</span>
         </span>
         <span className="dropzone-formats">
           <span><FileText size={15} /> PDF</span>
           <span><FileImage size={15} /> PNG, JPG, WebP</span>
-          <span>Up to 250 MB</span>
+          <span>{pick(locale, 'Up to 250 MB', 'حتى 250 ميجابايت')}</span>
         </span>
       </button>
 
@@ -71,7 +73,7 @@ export function Dropzone({ onFile, disabled = false }: DropzoneProps) {
 
       <div className="privacy-note">
         <LockKeyhole size={15} />
-        <span>Your files stay in your browser. Nothing is uploaded.</span>
+        <span>{pick(locale, 'Your files stay in your browser. Nothing is uploaded.', 'تبقى ملفاتك داخل متصفحك. لا يتم رفع أي شيء.')}</span>
       </div>
     </div>
   );
