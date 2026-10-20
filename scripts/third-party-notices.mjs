@@ -18,15 +18,24 @@ for (const [directory, metadata] of Object.entries(lock.packages)) {
     throw error;
   }
   const manifest = JSON.parse(await readFile(join(directory, 'package.json'), 'utf8'));
-  const notices = files.filter((file) =>
+  let noticeDirectory = directory;
+  let notices = files.filter((file) =>
     file.isFile() && /^(licen[cs]e|notice|copying)([._-]|$)/i.test(file.name),
   ).sort((a, b) => a.name.localeCompare(b.name));
+  // Native canvas platform packages share their parent package's license.
+  if (!notices.length && /^@napi-rs\/canvas-/.test(manifest.name)) {
+    noticeDirectory = 'node_modules/@napi-rs/canvas';
+    const parentFiles = await readdir(noticeDirectory, { withFileTypes: true });
+    notices = parentFiles.filter((file) =>
+      file.isFile() && /^(licen[cs]e|notice|copying)([._-]|$)/i.test(file.name),
+    ).sort((a, b) => a.name.localeCompare(b.name));
+  }
   if (!notices.length) {
     throw new Error('Missing license/notice file for ' + manifest.name);
   }
   sections.push(manifest.name + '@' + manifest.version + ' — ' + (manifest.license ?? metadata.license ?? 'See notices'));
   for (const file of notices) {
-    sections.push(file.name + '\n' + await readFile(join(directory, file.name), 'utf8'));
+    sections.push(file.name + '\n' + await readFile(join(noticeDirectory, file.name), 'utf8'));
   }
 }
 await writeFile('dist/third-party-notices.txt', sections.join('\n\n' + '='.repeat(72) + '\n\n') + '\n');
