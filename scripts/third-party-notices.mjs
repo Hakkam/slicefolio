@@ -30,6 +30,20 @@ for (const [directory, metadata] of Object.entries(lock.packages)) {
       file.isFile() && /^(licen[cs]e|notice|copying)([._-]|$)/i.test(file.name),
     ).sort((a, b) => a.name.localeCompare(b.name));
   }
+  // Some older MIT packages keep copyright and licensing only in README.
+  if (!notices.length && (manifest.license ?? metadata.license) === 'MIT') {
+    const readme = files.find((file) => file.isFile() && /^readme([._-]|$)/i.test(file.name));
+    if (readme) {
+      const text = await readFile(join(directory, readme.name), 'utf8');
+      if (/license|copyright|©/i.test(text)) {
+        sections.push(manifest.name + '@' + manifest.version + ' — MIT');
+        sections.push(text);
+        const mit = await readFile('LICENSE', 'utf8');
+        sections.push(mit.slice(mit.indexOf('Permission is hereby granted')));
+        continue;
+      }
+    }
+  }
   if (!notices.length) {
     throw new Error('Missing license/notice file for ' + manifest.name);
   }
